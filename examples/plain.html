@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-only; Copyright (C) 2026 Unfinished Works -->
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Plain HTML integration — Unfinished Phosphor</title><link rel="stylesheet" href="../src/core.css"><link rel="stylesheet" href="../src/components.css"><style>
+  body{margin:32px auto;padding:0 20px;max-width:950px;font:16px/1.7 system-ui,sans-serif;color:#242824;background:#f3f3ed}h1{font-size:30px}a{color:inherit}#example{padding:24px;margin:28px 0;border-radius:4px}.example-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--ph-gap)}button{cursor:pointer}.host-controls{display:flex;flex-wrap:wrap;gap:10px}.host-controls button{padding:8px}pre{white-space:pre-wrap;overflow-wrap:anywhere}#css-only{padding:24px}@media(max-width:600px){.example-grid{grid-template-columns:1fr}}
+</style></head>
+<body><a href="../">← Return to the playground</a><h1>Plain HTML integration</h1><p>A toolkit by <a href="https://unfinished-works.com/">Unfinished Works</a>. <a href="https://github.com/ghreprimand/unfinished-phosphor/issues">Report an issue</a>.</p><p id="outside-text">This host page uses its own light theme and system font. Only the two containers below opt into Phosphor.</p><div class="host-controls"><button id="toggle">Remove presentation</button><button id="palette">Switch palette</button><button id="modal">Open native dialog</button></div>
+<section id="example"><h2 class="ph-title">Notebook / Sample session</h2><div class="example-grid"><article class="ph-panel"><h3 class="ph-panel-heading">Panel example</h3><p class="ph-panel-body">Keep your application's layout, data, and event handlers. Add the scoped core and optionally opt into native component styles.</p></article><form class="ph-panel ph-panel-body" id="sample-form"><label class="ph-field" for="message">A note to keep<input class="ph-input" id="message" value="Imported 12 recordings." required></label><button class="ph-button">Save in this view</button><p id="status" role="status"></p></form></div><dialog class="ph-dialog" id="dialog" aria-labelledby="plain-dialog-title"><h2 id="plain-dialog-title" class="ph-title">Native dialog</h2><p>The browser handles focus and the Escape key. Keep the dialog inside the scope; it opens in the browser's top layer.</p><form method="dialog"><button class="ph-button" autofocus>Close dialog</button></form></dialog></section>
+<h2>CSS only</h2><p>No JavaScript is needed for glow, glass, or raster. This second scope stays static.</p><section id="css-only" data-phosphor data-ph-preset="website" data-ph-effects="static"><h3 class="ph-title">CSS-only presentation</h3><p>This container uses the static CSS treatment. Select the text or <a href="../">return to the playground</a>.</p></section>
+<h2>Local integration</h2><pre>&lt;link rel="stylesheet" href="./src/core.css"&gt;
+&lt;link rel="stylesheet" href="./src/components.css"&gt;
+&lt;section id="my-interface"&gt;Your existing HTML&lt;/section&gt;</pre><p>Import <code>mountPhosphor</code> from the local <code>src/index.js</code> module. An optional ambient instance attaches to the same container. Call <code>display.destroy()</code> when removing it.</p><p>Experimental API. No published package. Toolkit code: <a href="/LICENSE">GPL-3.0-only</a>, without warranty. <a href="/THIRD_PARTY_NOTICES.md">Third-party notices</a> · <a href="/source.tgz">Download source</a>. The community palette adaptations retain their upstream MIT notices.</p>
+<script type="module">
+import { mountPhosphor } from '../src/index.js';
+import { mountAmbient } from '../src/ambient.js';
+const root=document.querySelector('#example');
+let instance,alternate=false;
+function mount(){instance=mountPhosphor(root,{palette:alternate?'website:amber':'dashboard:odyssey-crt',effects:'on'});mountAmbient(root);}
+mount();
+document.querySelector('#toggle').onclick=()=>{if(instance){instance.destroy();instance=null;}else mount();document.querySelector('#toggle').textContent=instance?'Remove presentation':'Apply presentation';};
+document.querySelector('#palette').onclick=()=>{alternate=!alternate;if(instance)instance.update({palette:alternate?'website:amber':'dashboard:odyssey-crt'});};
+document.querySelector('#modal').onclick=()=>document.querySelector('#dialog').showModal();
+document.querySelector('#sample-form').onsubmit=event=>{event.preventDefault();document.querySelector('#status').textContent='Saved for this view: '+document.querySelector('#message').value;};
+</script></body></html>

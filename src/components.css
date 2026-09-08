@@ -1,0 +1,39 @@
+/* SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Unfinished Works
+ */
+/* Optional primitives. Native markup and app layout remain under consumer control. */
+:where([data-phosphor]) .ph-panel { min-width: 0; border: 1px solid var(--ph-border); border-radius: 2px; background: color-mix(in srgb,var(--ph-surface) 78%,transparent); box-shadow: inset 0 0 18px color-mix(in srgb,var(--ph-emission) 2%,transparent), 0 0 18px color-mix(in srgb,var(--ph-glass) 4%,transparent); }
+:where([data-phosphor]) .ph-panel-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 0; padding: 8px var(--ph-pad); font-size: 11px; font-weight: 400; letter-spacing: .09em; text-transform: uppercase; color: var(--ph-glass); border-bottom: 1px solid var(--ph-border); background: linear-gradient(90deg,color-mix(in srgb,var(--ph-emission) 3%,transparent),transparent); }
+:where([data-phosphor]) .ph-panel-body { padding: var(--ph-pad); }
+:where([data-phosphor]) .ph-muted { color: var(--ph-muted); }
+:where([data-phosphor]) .ph-accent { color: var(--ph-accent); }
+:where([data-phosphor]) .ph-success { color: var(--ph-success); }
+:where([data-phosphor]) .ph-warning { color: var(--ph-warning); }
+:where([data-phosphor]) .ph-danger { color: var(--ph-danger); }
+:where([data-phosphor]) .ph-info { color: var(--ph-info); }
+:where([data-phosphor]) .ph-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 34px; padding: 5px 12px; background: var(--ph-input); color: var(--ph-text); border: 1px solid var(--ph-control); border-radius: 2px; cursor: pointer; text-decoration: none; }
+:where([data-phosphor]) .ph-button:hover { background: var(--ph-raised); border-color: var(--ph-accent); }
+:where([data-phosphor]) .ph-button-primary { background: var(--ph-accent); color: var(--ph-on-accent); text-shadow: none; }
+:where([data-phosphor]) .ph-button-primary:hover { background: color-mix(in srgb,var(--ph-accent) 85%,white); color: var(--ph-on-accent); }
+:where([data-phosphor]) :where(.ph-button:disabled,.ph-button[aria-disabled='true']) { opacity: .55; cursor: not-allowed; }
+:where([data-phosphor]) .ph-field { display: grid; gap: 6px; margin-bottom: var(--ph-gap); }
+:where([data-phosphor]) .ph-input { box-sizing: border-box; width: 100%; min-width: 0; min-height: 36px; padding: 7px 10px; border: 1px solid var(--ph-control); border-radius: 2px; color: var(--ph-text); background: var(--ph-input); }
+:where([data-phosphor]) .ph-input::placeholder { color: var(--ph-muted); opacity: 1; }
+:where([data-phosphor]) .ph-input[aria-invalid='true'] { border-color: var(--ph-danger); }
+:where([data-phosphor]) .ph-table-scroll { overflow: auto; max-width: 100%; }
+:where([data-phosphor]) .ph-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; font-variant-numeric: tabular-nums; }
+:where([data-phosphor]) .ph-table :where(th,td) { padding: var(--ph-cell-y) var(--ph-cell-x); border-bottom: 1px solid var(--ph-border); white-space: nowrap; }
+:where([data-phosphor]) .ph-table th { color: var(--ph-muted); font-size: 10px; font-weight: 400; text-transform: uppercase; letter-spacing: .06em; background: var(--ph-raised); }
+:where([data-phosphor]) .ph-table tbody tr:hover { background: var(--ph-raised); }
+:where([data-phosphor]) .ph-table caption { text-align: left; padding: 8px var(--ph-cell-x); color: var(--ph-muted); }
+:where([data-phosphor]) .ph-badge { display: inline-block; padding: 1px 5px; font-size: 10px; border: 1px solid currentColor; border-radius: 1px; }
+:where([data-phosphor]) .ph-notice { padding: var(--ph-pad); border: 1px solid var(--ph-border); border-left: 3px solid var(--ph-info); background: var(--ph-surface); }
+:where([data-phosphor]) .ph-tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--ph-border); }
+:where([data-phosphor]) .ph-tabs button { padding: 8px 12px; border: 0; border-bottom: 2px solid transparent; color: var(--ph-muted); background: transparent; cursor: pointer; }
+:where([data-phosphor]) .ph-tabs button[aria-selected='true'] { border-color: var(--ph-accent); color: var(--ph-accent); }
+:where([data-phosphor]) .ph-dialog { box-sizing: border-box; width: min(480px,calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; margin: auto; padding: 24px; border: 1px solid var(--ph-control); color: var(--ph-text); background: var(--ph-surface); font: inherit; border-radius: 3px; }
+:where([data-phosphor]) .ph-dialog::backdrop { background: rgb(0 0 0 / .72); }
+:where([data-phosphor]) .ph-code { overflow: auto; margin: 0; padding: var(--ph-pad); font: 12px/1.8 var(--ph-font); text-shadow: none; background: var(--ph-input); tab-size: 2; }
+:where([data-phosphor][data-ph-effects='off']) .ph-panel { box-shadow: none; background: var(--ph-surface); }
+
+:where([data-phosphor][data-ph-effects='off']) .ph-panel-heading { background: var(--ph-surface); }

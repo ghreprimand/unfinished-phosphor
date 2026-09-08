@@ -1,0 +1,28 @@
+{
+  "name": "unfinished-phosphor",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A CRT presentation toolkit by Unfinished Works. Experimental CSS and JavaScript toolkit.",
+  "license": "GPL-3.0-only",
+  "exports": {
+    ".": "./src/index.js",
+    "./ambient": "./src/ambient.js",
+    "./core.css": "./src/core.css",
+    "./components.css": "./src/components.css",
+    "./palettes": "./src/palettes.js"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build && node scripts/package-demo.mjs",
+    "test": "node --test tests/palettes.test.js",
+    "test:browser": "playwright test",
+    "check": "npm test && npm run test:browser && npm run build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.61.1",
+    "vite": "^6.4.3"
+  }
+}

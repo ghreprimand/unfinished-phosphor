@@ -1,44 +1,124 @@
 # Unfinished Phosphor
 
-**A CRT presentation toolkit by Unfinished Works.**
+**A CRT presentation toolkit by [Unfinished Works](https://unfinished-works.com/).**
 
-Illuminated text, dark glass, fine raster texture and ambient tube light—for interfaces that feel like a phosphor display while remaining readable and usable.
+Illuminated text, dark glass, stationary raster, and optional ambient light for native web interfaces.
 
-Unfinished Phosphor is being developed as a reusable version of the visual language behind Unfinished Works. The aim is to bring that appearance to websites, dashboards and application workbenches without replacing their content or behavior.
+> **Status: experimental demonstration.** The toolkit code is licensed under GPL-3.0-only. The first public edition includes seven palettes with documented origins. No npm package is published.
 
-> **Status: project foundation.** This repository currently contains the project introduction. The toolkit, examples and installation instructions are still to come; there is no published package or supported API yet.
+[Open the demo](https://unfinished-phosphor.pages.dev/) · [Integration guide](docs/integration.md) · [Theme credits](THIRD_PARTY_NOTICES.md)
 
-## The visual direction
+## License
 
-- Readable phosphor text emission with a tight luminous core and a softer halo.
-- Dark glass surfaces, subtle vignette and stationary raster texture.
-- Optional ambient illumination and restrained pointer response.
-- Terminal-inspired typography, fine borders and compact controls.
-- Color palettes that change the atmosphere without rearranging the interface.
+Copyright (C) 2026 Unfinished Works. The toolkit code and examples are licensed under the [GNU General Public License, version 3 only](LICENSE), without warranty. You may redistribute and modify them under those terms. No proprietary-use exception or separate permissive license for examples is granted.
 
-The everyday treatment is designed for displays that stay open for hours. It avoids a traveling bright scanline, distracting flicker and full-page text blur.
+Imported themes retain their applicable upstream licenses and notices. See [third-party notices](THIRD_PARTY_NOTICES.md) for pinned sources and full license texts. The GPL designation does not claim ownership of third-party theme names or material. Unreviewed palettes from local development are excluded from the public edition.
 
-## Planned building blocks
+## Run locally
 
-| Layer | Purpose |
+Use Node.js 24.19.0 (recorded in `.node-version`) and npm. Building the source download also requires GNU `tar`.
+
+```sh
+npm ci --include=dev
+npm run dev
+```
+
+Vite normally serves at `http://localhost:5173/`. To select an available port explicitly:
+
+```sh
+npm run dev -- --port 5180 --strictPort
+```
+
+The playground includes website, dashboard, and workbench specimens with invented content. Filter a project queue, inspect native dialogs, explore file tabs, edit a session-only draft, and copy the current configuration. Palette, presentation, density, and effects are independent. Changing a palette preserves content and layout.
+
+## Decorate existing HTML
+
+Load the scoped core. The component stylesheet is optional.
+
+```html
+<link rel="stylesheet" href="./src/core.css">
+<link rel="stylesheet" href="./src/components.css">
+
+<section id="my-interface">
+  <!-- Keep your application's HTML and behavior. -->
+</section>
+
+<script type="module">
+  import { mountPhosphor } from './src/index.js';
+
+  const root = document.querySelector('#my-interface');
+  const display = mountPhosphor(root, {
+    palette: 'dashboard:odyssey-crt',
+    preset: 'dashboard',
+    density: 'compact',
+    effects: 'on',
+    crispText: false,
+  });
+
+  // Optional ambient light; no UI text is drawn into the canvas.
+  const { mountAmbient } = await import('./src/ambient.js');
+  const ambient = mountAmbient(root);
+
+  // Later:
+  display.update({ palette: 'website:amber' });
+  // On removal, restore previous attributes/tokens and clean up ambient:
+  // display.destroy();
+</script>
+```
+
+These are repository-relative imports, not an installation command for a published package. The runnable [plain HTML example](examples/plain.html) shows two isolated scopes inside an independently styled host page.
+
+## CSS only
+
+No JavaScript is required for static glow, glass, or raster. The core includes a default green palette.
+
+```html
+<link rel="stylesheet" href="./src/core.css">
+<section data-phosphor data-ph-preset="website" data-ph-effects="static">
+  <h1 class="ph-title">Example heading</h1>
+  <p>This text uses the static CRT treatment.</p>
+</section>
+```
+
+The `data-ph-palette` attribute is descriptive metadata; selecting a catalog palette requires the adapter to write its variables. For CSS-only custom colors, define the complete semantic token set described in the [integration guide](docs/integration.md).
+
+## Included layers
+
+| Layer | Implementation |
 | --- | --- |
-| Core CSS | Typography, text emission, glass, raster, focus states and shared visual tokens |
-| Optional renderer | Ambient CRT illumination with lifecycle cleanup and a static fallback |
-| Palettes | Consistent roles for surfaces, text, accents, status and effects |
-| Presentation presets | Expressive website and dense dashboard treatments, independent of palette |
-| Optional component styles | Panels, controls, tables, tabs, notices and dialogs |
-| Playground and examples | Realistic interfaces, live adjustments and copyable configuration |
+| Core | Scoped CSS variables, emission, raster, fog, focus and selection |
+| Presets | Expressive website and restrained dashboard presentation |
+| Density | Compact or comfortable spacing, independent of type size |
+| Palettes | Four Phosphor palettes plus adapted Nord, Dracula, and Catppuccin Mocha palettes, with pinned upstream sources |
+| Ambient | Optional WebGL, event-driven pointer response, static CSS fallback |
+| Primitives | Native panels, controls, tables, tabs, notices, code and dialogs |
+| Playground | Three interactive synthetic specimens, comparison and configuration export |
 
-## Integration principles
+The renderer has no application globals or hardcoded IDs. It caps its buffer at 900 pixels on the longest edge and DPR at 1.5. Pointer response draws at most about 30 fps and settles to zero scheduled frames at idle. Hidden/offscreen containers, reduced motion, coarse pointers, increased contrast, and effects-off use static styling.
 
-Start with plain HTML, CSS and a small optional JavaScript module. Framework integrations can build on that foundation.
+Reduced motion retains static emission, glass, and raster. Crisp text independently removes text halos; effects-off removes the decorative treatment. No traveling scanline, periodic pulse, or full-content blur is included.
 
-Applications should be able to adopt the effects and color tokens while retaining their existing layout, or use the optional component styles for a fuller treatment. Styling will be explicitly scoped rather than imposed globally.
+## Validation
 
-Text must remain selectable and accessible. Effects must not intercept input. Static styling should remain useful without WebGL, and reduced motion should stop animation without unnecessarily removing static glow. Palette, density and effects controls should remain independent.
+```sh
+npm test
+npx playwright install chromium
+npm run test:browser
+npm run build
+```
 
-## Initial milestone
+Palette tests cover the complete catalog, role mapping, contrast, and stable IDs. Chromium checks cover native interactions, keyboard tabs/dialogs, scope isolation, renderer lifecycle and fallback, motion preferences, high DPI, narrow containers, and zoom. This first demonstration does not establish support across all browsers or frameworks.
 
-The first milestone is a working, inspectable core with two presentation presets, a palette collection and representative website, dashboard and workbench examples. Visual fidelity, readability, accessibility and resource use will be checked together.
+See the [integration and adaptation guide](docs/integration.md) and [provenance inventory](docs/provenance.md). System fonts are used; no font files, reference screenshots, or third-party visual assets are bundled.
 
-Follow this repository as the implementation and examples take shape.
+## Demo hosting
+
+Cloudflare Pages can host the static `dist/` output. The build includes license notices and a source archive matching that build. See [hosting and release instructions](docs/deployment.md). The website is the first link to share for trying the toolkit; the GitHub repository provides the source and integration instructions.
+
+## Feedback and contributions
+
+[Report a bug or suggest a change](https://github.com/ghreprimand/unfinished-phosphor/issues). For rendering problems, include your browser and version, operating system, steps to reproduce, expected result, and the configuration copied from the playground. Use a minimal example with synthetic data.
+
+For code changes, explain the resulting behavior and run `npm run check`. Keep native controls accessible and preserve reduced-motion behavior. Contributions to toolkit code use GPL-3.0-only; imported material must include its upstream source and applicable license notices. Do not include private application data or screenshots.
+
+Current validation covers Chromium. Firefox, Safari, and mobile-device checks remain part of release preparation; no wider browser-support claim is made.
