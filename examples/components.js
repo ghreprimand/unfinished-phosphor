@@ -35,3 +35,9 @@ for (const [index, tab] of tabs.entries()) {
     tabs[next].focus();
   });
 }
+
+document.querySelector('#reference-glow').addEventListener('input', event => {
+  const glow = Number(event.target.value);
+  display.update({glow});
+  document.querySelector('#reference-glow-value').textContent = `${glow}%`;
+});

@@ -19,7 +19,8 @@
     "test": "node --test tests/palettes.test.js",
     "test:browser": "playwright test",
     "check": "npm test && npm run test:browser && npm run build",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview --host 127.0.0.1",
+    "test:engines": "node scripts/check-engines.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

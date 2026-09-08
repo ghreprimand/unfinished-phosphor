@@ -16,9 +16,9 @@ const files = [
   'fonts/victor-mono/LICENSE', 'fonts/victor-mono/provenance.json',
   'fonts/victor-mono/VictorMono-Regular.woff2', 'fonts/victor-mono/VictorMono-Italic.woff2',
   'fonts/victor-mono/VictorMono-Bold.woff2', 'fonts/victor-mono/VictorMono-BoldItalic.woff2',
-  'playground/main.js', 'playground/specimens.js', 'playground/playground.css',
-  'docs/integration.md', 'docs/provenance.md', 'docs/deployment.md', 'docs/getting-started.md', 'docs/style-reference.md',
-  'scripts/package-demo.mjs', 'scripts/snapshot-palettes.mjs',
+  'playground/main.js', 'playground/optics.js', 'playground/specimens.js', 'playground/playground.css',
+  'docs/integration.md', 'docs/provenance.md', 'docs/deployment.md', 'docs/getting-started.md', 'docs/style-reference.md', 'docs/adapters.md',
+  'scripts/package-demo.mjs', 'scripts/check-engines.mjs', 'scripts/snapshot-palettes.mjs',
   'tests/palettes.test.js', 'tests/browser/playground.spec.js',
 ];
 for (const name of files) {

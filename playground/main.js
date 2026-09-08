@@ -3,12 +3,29 @@
  */
 import { mountPhosphor, defaults, palettes, resolvePalette } from '../src/index.js';
 import { mountAmbient } from '../src/ambient.js';
+import { optics } from './optics.js';
 import { dashboard, website, workbench, documentViews } from './specimens.js';
 const $ = selector => document.querySelector(selector);
 const root = $('#specimen');
-const display = mountPhosphor(root);
+const views = ['optics', 'website', 'dashboard', 'workbench'];
+let initialConfig = {}, initialView = new URLSearchParams(location.search).get('view') || 'optics';
+let invalidLink = false;
+if (location.hash.startsWith('#config=')) {
+  try {
+    const shared = JSON.parse(decodeURIComponent(location.hash.slice(8)));
+    if (!shared || typeof shared !== 'object' || Array.isArray(shared)) throw new Error('Invalid shared configuration');
+    const { view, ...config } = shared;
+    if (!views.includes(view)) throw new Error('Invalid specimen');
+    initialView = view; initialConfig = config;
+  } catch { invalidLink = true; }
+}
+let display;
+try { display = mountPhosphor(root, initialConfig); }
+catch { invalidLink = true; display = mountPhosphor(root); }
+if (!views.includes(initialView)) initialView = 'optics';
+if (invalidLink) $('#share-status').textContent = 'This link contains invalid settings. Defaults are shown.';
 const ambient = mountAmbient(root);
-let currentSpecimen = 'dashboard', comparing = false, comparisonEffects;
+let currentSpecimen = initialView, comparing = false, comparisonEffects;
 const savedDraft = { title: 'Import WAV files', body: 'Keep the original WAV file. Store the title and description separately so edits do not change the recording.' };
 const paletteSelect = $('#palette');
 for (const category of [...new Set(palettes.map(p => p.category))]) {
@@ -34,6 +51,13 @@ function syncControls() {
   paletteSelect.value = config.palette;
   $('#effects').value = comparing ? comparisonEffects : config.effects;
   $('#crisp').checked = config.crispText;
+  if ($('#study-palette')) $('#study-palette').textContent = JSON.stringify(config.palette);
+  for (const key of ['glow', 'raster', 'glass']) {
+    $(`#${key}`).value = config[key];
+    $(`#${key}-value`).textContent = `${config[key]}%`;
+    $(`#${key}`).disabled = config.effects === 'off' || (key === 'glow' && config.crispText);
+    if ($(`#study-${key}`)) $(`#study-${key}`).textContent = config[key];
+  }
   for (const type of ['preset','density','palette']) document.querySelectorAll(`[data-${type}]`).forEach(el=>el.setAttribute('aria-pressed',String(el.dataset[type]===config[type])));
   $('#preset-hint').textContent = config.preset === 'website' ? 'Larger type and stronger text glow.' : 'Smaller type and less text glow.';
   $('#palette-family').textContent = palettes.find(p=>p.id===config.palette).category.toUpperCase();
@@ -50,12 +74,19 @@ function syncControls() {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   $('#renderer-state').textContent = config.effects === 'off' ? 'DECORATIVE EFFECTS OFF' : reduced ? 'REDUCED MOTION / STATIC CRT' : config.effects==='static' ? 'STATIC GLASS + PHOSPHOR' : ambient.stats.context === 'webgl' ? 'AMBIENT / RESTS AT IDLE' : 'CSS FALLBACK / STATIC CRT';
 }
-function update(patch) { if(comparing)endCompare(); display.update(patch); syncControls(); }
+function update(patch) { if(comparing)endCompare(); display.update(patch); $('#share-status').textContent=''; syncControls(); }
 $('#presets').addEventListener('click',e=>{if(e.target.dataset.preset)update({preset:e.target.dataset.preset});});
 $('#densities').addEventListener('click',e=>{if(e.target.dataset.density)update({density:e.target.dataset.density});});
 paletteSelect.addEventListener('change',()=>update({palette:paletteSelect.value}));
 $('#effects').addEventListener('change',()=>update({effects:$('#effects').value}));
 $('#crisp').addEventListener('change',()=>update({crispText:$('#crisp').checked}));
+for (const key of ['glow','raster','glass']) $(`#${key}`).addEventListener('input', event => update({ [key]: Number(event.target.value) }));
+$('#share-config').addEventListener('click', async () => {
+  const url = new URL(location.pathname, location.origin);
+  url.hash = 'config=' + encodeURIComponent(JSON.stringify({view:currentSpecimen, ...display.config}));
+  try { await navigator.clipboard.writeText(url.href); $('#share-status').textContent = 'Setup link copied.'; }
+  catch { $('#share-status').textContent = 'Clipboard unavailable. Copy this URL: ' + url.href; }
+});
 $('#reset').addEventListener('click',()=>{update(defaults);$('#announcement').textContent='Display settings reset.';});
 matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',syncControls);
 function showSample(title, body) { $('#sample-dialog-title').textContent=title; $('#sample-dialog-body').textContent=body; $('#sample-dialog').showModal(); }
@@ -69,7 +100,7 @@ function bindTabs(list, activate) {
   });
 }
 function renderSpecimen(name) {
-  currentSpecimen=name; $('#specimen-content').innerHTML=({dashboard,website,workbench})[name]();
+  currentSpecimen=name; $('#specimen-content').innerHTML=({optics,dashboard,website,workbench})[name]();
   document.querySelectorAll('[data-specimen]').forEach(tab=>{tab.setAttribute('aria-selected',String(tab.dataset.specimen===name));tab.tabIndex=tab.dataset.specimen===name?0:-1;});
   root.setAttribute('aria-labelledby',`tab-${name}`);$('#specimen-path').textContent=`specimens / ${name}`;
   if(name==='dashboard') {
@@ -96,7 +127,8 @@ function renderSpecimen(name) {
     $('#note-form').addEventListener('submit',event=>{event.preventDefault();savedDraft.title=$('#note-title').value;savedDraft.body=$('#note-body').value;$('#note-status').textContent='Draft saved in this session. It will clear on reload.';});
     $('#sample-review').addEventListener('click',()=>showSample('Review the working draft',`Draft title: ${savedDraft.title}. This is a local review only. Publishing is unavailable in this demonstration.`));
   }
-  ambient.update();
+  $('#specimen-kind').textContent = name === 'optics' ? 'Type specimen' : 'Synthetic application example';
+  syncControls(); ambient.update();
 }
 document.querySelectorAll('[data-specimen]').forEach(tab=>tab.addEventListener('click',()=>renderSpecimen(tab.dataset.specimen)));
 bindTabs($('.specimen-tabs'),tab=>renderSpecimen(tab.dataset.specimen));
@@ -110,6 +142,21 @@ for(const event of ['pointerup','pointercancel','lostpointercapture','blur'])$('
 $('#compare').addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();beginCompare();}});
 $('#compare').addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();endCompare();}});
 window.addEventListener('blur',endCompare);
+window.addEventListener('hashchange', () => {
+  if (!location.hash.startsWith('#config=')) return;
+  for (const dialog of document.querySelectorAll('dialog[open]')) dialog.close();
+  try {
+    const shared = JSON.parse(decodeURIComponent(location.hash.slice(8)));
+    if (!shared || typeof shared !== 'object' || Array.isArray(shared)) throw new Error('Invalid shared configuration');
+    const { view, ...config } = shared;
+    if (!views.includes(view)) throw new Error('Invalid specimen');
+    update({ ...defaults, ...config }); renderSpecimen(view);
+    $('#share-status').textContent = 'Shared setup loaded.';
+  } catch {
+    update(defaults); renderSpecimen('optics');
+    $('#share-status').textContent = 'This link contains invalid settings. Defaults are shown.';
+  }
+});
 renderSpecimen(currentSpecimen);syncControls();
 // Exposed only by the demo for lifecycle/performance inspection in browser tests.
 export { display, ambient };

@@ -53,6 +53,16 @@
     <section aria-labelledby="tabs-heading"><h2 id="tabs-heading" class="ph-title">Tabs and disclosure</h2><div class="ph-tabs" role="tablist" aria-label="Recording information"><button role="tab" id="tab-details" aria-controls="panel-details" aria-selected="true">Details</button><button role="tab" id="tab-source" aria-controls="panel-source" aria-selected="false" tabindex="-1">Markup</button></div><div id="panel-details" role="tabpanel" aria-labelledby="tab-details" tabindex="0"><p>Use Left/Right, Home, and End to switch tabs. This example supplies keyboard handling in <code>examples/components.js</code>.</p></div><div id="panel-source" role="tabpanel" aria-labelledby="tab-source" tabindex="0" hidden><pre class="ph-code"><code>&lt;div class="ph-tabs" role="tablist" aria-label="Information"&gt;
   &lt;!-- Buttons need tab roles, panel IDs, and keyboard behavior. --&gt;
 &lt;/div&gt;</code></pre></div><details><summary>What does the stylesheet implement?</summary><p>The appearance of tabs, buttons, fields, and dialogs. Native HTML supplies controls and disclosure behavior. Application code supplies tab selection, submission, and dialog opening.</p></details></section>
+    <section aria-labelledby="technical-heading"><h2 id="technical-heading" class="ph-title">Technical content</h2><div class="reference-grid"><div class="ph-prose"><p>Prose uses a readable line length. Use <kbd class="ph-kbd">Tab</kbd> to move between native controls.</p><label class="ph-field" for="reference-glow">Glow softness <output id="reference-glow-value" for="reference-glow">100%</output><input class="ph-range" id="reference-glow" type="range" min="0" max="100" value="100"></label><label class="ph-field" for="reference-progress">Example progress<progress class="ph-progress" id="reference-progress" max="100" value="64">64%</progress></label><div class="ph-sharp"><p>This whole region opts out of text glow, including <strong>emphasis</strong>.</p></div></div><pre class="ph-code"><code><span class="ph-syntax-comment">// Apply to your existing container.</span>
+<span class="ph-syntax-keyword">const</span> display = mountPhosphor(root, {
+  glow: <span class="ph-syntax-number">50</span>,
+  palette: <span class="ph-syntax-string">'website:amber'</span>,
+});
+
+// Optional classes:
+// ph-prose, ph-sharp, ph-kbd,
+// ph-range, ph-progress,
+// ph-syntax-keyword/string/number/comment</code></pre></div></section>
     <section aria-labelledby="dialog-heading"><h2 id="dialog-heading" class="ph-title">Native dialogs</h2><p>The action above calls <code>showModal()</code>. Keep the dialog inside the Phosphor scope so it inherits the palette and font.</p><pre class="ph-code"><code>&lt;dialog class="ph-dialog" aria-labelledby="dialog-title"&gt;
   &lt;h2 id="dialog-title"&gt;Recording details&lt;/h2&gt;
   &lt;form method="dialog"&gt;

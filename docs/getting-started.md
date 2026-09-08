@@ -63,6 +63,9 @@ Give the container an ID, such as `id="my-interface"`, and add this module scrip
     preset: 'dashboard',
     density: 'comfortable',
     effects: 'static',
+    glow: 50,
+    raster: 75,
+    glass: 100,
   });
 
   // When preferences change:
@@ -93,5 +96,7 @@ Adjust paths relative to that entry file. Mount after the container exists in th
 ## Change the treatment
 
 Use `data-ph-preset="website"` for larger type and stronger glow, or `dashboard` for smaller type and less glow. Density changes spacing independently. Use `data-ph-effects="off"` to remove decorative effects and `data-ph-crisp="true"` to remove text halos only. If JavaScript owns the container, use `display.update()` so its configuration remains in sync.
+
+For sliders, sharp editor surfaces, charts, exports, and a React lifecycle recipe, see [Adapting an existing interface](adapters.md).
 
 The [style reference](style-reference.md) maps the visual layers, component classes, and intensity controls. The [integration guide](integration.md) covers all options, semantic colors, scoping, portals, cleanup, accessibility, and renderer limits.

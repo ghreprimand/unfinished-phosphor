@@ -29,7 +29,7 @@ Vite normally serves at `http://localhost:5173/`. To select an available port ex
 npm run dev -- --port 5180 --strictPort
 ```
 
-The playground includes website, dashboard, and workbench specimens with invented content. Filter a project queue, inspect native dialogs, explore file tabs, edit a session-only draft, and copy the current configuration. Palette, presentation, density, and effects are independent. Changing a palette preserves content and layout.
+The display lab opens with a typography and optics specimen. Website, dashboard, and workbench examples remain available with invented content. Filter a project queue, inspect native dialogs, explore file tabs, edit a session-only draft, and copy the current configuration or a link to the complete setup. Glow softness, raster, and glass are adjustable from 0–100. Palette, presentation, density, and effects are independent. Changing a palette preserves content and layout.
 
 ## Decorate existing HTML
 
@@ -93,7 +93,9 @@ The `data-ph-palette` attribute is descriptive metadata; selecting a catalog pal
 | Ambient | Optional WebGL, event-driven pointer response, static CSS fallback |
 | Typography | Self-hosted Victor Mono on the website; optional font stylesheet for consumers |
 | Primitives | Native panels, controls, tables, tabs, notices, code and dialogs |
-| Playground | Three interactive synthetic specimens, comparison and configuration export |
+| Display lab | Typography/optics specimen, three application examples, comparison, live optical controls, configuration export and setup links |
+| Optical controls | Glow softness, raster strength, and glass strength; independent 0–100 values |
+| Technical content | Sharp editor/code regions, prose, keyboard labels, range/progress, and syntax colors |
 
 The renderer has no application globals or hardcoded IDs. It caps its buffer at 900 pixels on the longest edge and DPR at 1.5. Pointer response draws at most about 30 fps and settles to zero scheduled frames at idle. Hidden/offscreen containers, reduced motion, coarse pointers, increased contrast, and effects-off use static styling.
 
@@ -110,7 +112,7 @@ npm run build
 
 Palette tests cover the complete catalog, role mapping, contrast, and stable IDs. Chromium checks cover native interactions, keyboard tabs/dialogs, scope isolation, renderer lifecycle and fallback, motion preferences, high DPI, narrow containers, and zoom. This first demonstration does not establish support across all browsers or frameworks.
 
-See the [integration and adaptation guide](docs/integration.md) and [provenance inventory](docs/provenance.md). The website uses self-hosted Victor Mono. The toolkit defaults to system fonts; import `src/fonts.css` after the core and add `data-ph-font="victor-mono"` to opt in. Font sources, hashes, and OFL terms are included. See the [style reference](docs/style-reference.md) for visual layers, reusable classes, and example-only behavior.
+See [adapter recipes](docs/adapters.md) for sliders, prose/editors, chart colors and exports, and framework ownership. See the [integration and adaptation guide](docs/integration.md) and [provenance inventory](docs/provenance.md). The website uses self-hosted Victor Mono. The toolkit defaults to system fonts; import `src/fonts.css` after the core and add `data-ph-font="victor-mono"` to opt in. Font sources, hashes, and OFL terms are included. See the [style reference](docs/style-reference.md) for visual layers, reusable classes, and example-only behavior.
 
 ## Demo hosting
 
@@ -122,4 +124,14 @@ Cloudflare Pages can host the static `dist/` output. The build includes license 
 
 For code changes, explain the resulting behavior and run `npm run check`. Keep native controls accessible and preserve reduced-motion behavior. Contributions to toolkit code use GPL-3.0-only; imported material must include its upstream source and applicable license notices. Do not include private application data or screenshots.
 
-Current validation covers Chromium. Firefox, Safari, and mobile-device checks remain part of release preparation; no wider browser-support claim is made.
+The full browser suite targets Chromium. Additional Firefox smoke checks cover native type/overlays, fonts, optical controls, palette switching, tabs, reduced motion, three viewport widths, dialogs, and forms. Safari and real-device validation remain outstanding.
+
+For additional engines, install their Playwright browsers and required platform dependencies, start the dev server on port 5180, then run:
+
+```sh
+npx playwright install firefox webkit
+npm run test:engines -- firefox
+npm run test:engines -- webkit
+```
+
+The engine script also accepts `PHOSPHOR_TEST_URL` to check a running production preview. WebKit requires compatible host libraries; a browser-launch failure is not a passing compatibility check.

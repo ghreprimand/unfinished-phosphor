@@ -13,6 +13,11 @@ Start with [Getting started](getting-started.md) for file-copy instructions and 
 | `density` | `compact`, `comfortable` | `compact` |
 | `effects` | `on`, `static`, `off` | `on` |
 | `crispText` | Boolean | `false` |
+| `glow` | Finite number, 0–100; text-shadow softness/strength | `100` |
+| `raster` | Finite number, 0–100; stationary lines and RGB mask | `100` |
+| `glass` | Finite number, 0–100; vignette and reflection | `100` |
+
+Optical values are percentages of the preset treatment, not blur radii. Glow does not change foreground color or geometry. Code, inputs, and `.ph-sharp` regions remain sharp. See [adapter recipes](adapters.md) for live sliders, editors, charts, exports, and framework ownership.
 
 Unknown keys and values throw before changing the container. `config` is immutable. Calling mount again on the same element returns the existing owner and applies the provided options. Do not share ownership across unrelated lifecycles. `destroy()` is idempotent; it restores pre-mount attributes and inline palette tokens, disposes its ambient instance, and preserves application content and listeners. Updating a destroyed owner throws.
 
@@ -92,4 +97,4 @@ This implementation does not animate ambient light continuously. It has no movin
 
 ## Local delivery and boundaries
 
-The Vite build produces a static demo with playground, component reference, and plain HTML entries, license notices, and a matching source archive. It is not an npm release pipeline. JSON catalog import attributes and modern CSS (`color-mix`, container queries) require current browsers; Chromium is the tested browser. The toolkit code and examples use GPL-3.0-only. The public palette selection includes pinned upstream sources and notices. See [deployment instructions](deployment.md) before public distribution.
+The Vite build produces a static demo with playground, component reference, and plain HTML entries, license notices, and a matching source archive. It is not an npm release pipeline. JSON catalog import attributes and modern CSS (`color-mix`, container queries) require current browsers; Chromium has the full automated suite, with additional Firefox smoke checks. Safari remains unverified. The toolkit code and examples use GPL-3.0-only. The public palette selection includes pinned upstream sources and notices. See [deployment instructions](deployment.md) before public distribution.

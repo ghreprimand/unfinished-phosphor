@@ -37,3 +37,14 @@
 :where([data-phosphor][data-ph-effects='off']) .ph-panel { box-shadow: none; background: var(--ph-surface); }
 
 :where([data-phosphor][data-ph-effects='off']) .ph-panel-heading { background: var(--ph-surface); }
+
+/* Reading and technical content. No syntax parser or widget logic is included. */
+:where([data-phosphor]) .ph-prose { line-height: 1.85; overflow-wrap: anywhere; }
+:where([data-phosphor]) .ph-prose :where(p,ul,ol) { max-width: 70ch; }
+:where([data-phosphor]) .ph-kbd { display: inline-block; padding: 1px 5px; font: .9em var(--ph-font); border: 1px solid var(--ph-control); border-bottom-width: 2px; border-radius: 3px; color: var(--ph-text); background: var(--ph-input); text-shadow: none; }
+:where([data-phosphor]) .ph-range { width: 100%; accent-color: var(--ph-accent); }
+:where([data-phosphor]) .ph-progress { accent-color: var(--ph-accent); height: 8px; }
+:where([data-phosphor]) .ph-syntax-keyword { color: var(--ph-secondary); }
+:where([data-phosphor]) .ph-syntax-string { color: var(--ph-success); }
+:where([data-phosphor]) .ph-syntax-number { color: var(--ph-warning); }
+:where([data-phosphor]) .ph-syntax-comment { color: var(--ph-muted); }

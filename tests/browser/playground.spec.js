@@ -4,12 +4,97 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const moduleStats = page => page.evaluate(async()=>(await import('/playground/main.js')).ambient.stats);
+test('optics landing exposes independent controls without blurring or moving native type', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('#tab-optics')).toHaveAttribute('aria-selected', 'true');
+  const type = page.locator('.type-primary');
+  const measure = () => type.evaluate(el => ({color:getComputedStyle(el).color, font:getComputedStyle(el).font, rect:el.getBoundingClientRect().toJSON(), text:el.textContent}));
+  const before = await measure();
+  const heading = page.locator('.type-primary h2');
+  const shadow = () => heading.evaluate(el => getComputedStyle(el).textShadow);
+  const full = await shadow();
+  await page.locator('#glow').focus(); await page.keyboard.press('Home');
+  await expect(page.locator('#glow-value')).toHaveText('0%');
+  expect(await shadow()).toBe('none');
+  expect(await measure()).toEqual(before);
+  await page.keyboard.press('End');
+  expect(await shadow()).toBe(full);
+  await page.locator('#glow').evaluate(el => {el.value='50';el.dispatchEvent(new Event('input',{bubbles:true}));});
+  expect(await shadow()).not.toBe(full);
+  for (const selector of ['.code-study pre','.code-study code','.ph-syntax-number']) {
+    expect(await page.locator(selector).first().evaluate(el => getComputedStyle(el).textShadow)).toBe('none');
+  }
+  const overlay = () => page.locator('#specimen').evaluate(el => getComputedStyle(el,'::after').backgroundImage);
+  const originalOverlay = await overlay();
+  await page.locator('#raster').focus(); await page.keyboard.press('Home');
+  expect(await overlay()).not.toBe(originalOverlay);
+  await expect(page.locator('#glass')).toHaveValue('100');
+  await page.locator('#glass').focus(); await page.keyboard.press('Home');
+  await expect(page.locator('#raster')).toHaveValue('0');
+  await page.locator('#crisp').check();
+  await expect(page.locator('#glow')).toBeDisabled();
+  expect(await shadow()).toBe('none');
+  await page.locator('#crisp').uncheck();
+  await page.emulateMedia({ reducedMotion:'reduce' });
+  expect(await shadow()).not.toBe('none');
+  expect((await moduleStats(page)).running).toBe(false);
+  await page.selectOption('#effects','off');
+  for (const key of ['glow','raster','glass']) await expect(page.locator('#'+key)).toBeDisabled();
+  await page.locator('#reset').click();
+  for (const key of ['glow','raster','glass']) await expect(page.locator('#'+key)).toHaveValue('100');
+  const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+  expect(accessibility.violations).toEqual([]);
+  for (const width of [3840,2560,1440,1024,720,390]) {
+    await page.setViewportSize({width,height:1000});
+    const fits = await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
+    expect(fits, `Overflow at ${width}px`).toBe(true);
+  }
+});
+test('optical API rejects invalid values atomically and restores host variables', async ({ page }) => {
+  await page.goto('/');
+  const result = await page.evaluate(async () => {
+    const { mountPhosphor } = await import('/src/index.js');
+    const root=document.createElement('section');root.innerHTML='<h2 class="ph-title">Title</h2><strong class="ph-metric">42</strong><div class="ph-sharp"><span class="ph-title">Sharp region</span></div><input value="Editable">';
+    root.style.setProperty('--ph-glow','.3','important'); root.setAttribute('data-ph-glow','30');document.body.append(root);
+    const original=root.getAttribute('style');const display=mountPhosphor(root,{glow:0,raster:25,glass:75});
+    const zero=[root.querySelector('h2'),root.querySelector('strong')].map(el=>({shadow:getComputedStyle(el).textShadow,filter:getComputedStyle(el).filter}));
+    const previous=root.getAttribute('style');let rejected=0;
+    for(const key of ['glow','raster','glass']) for(const value of [-1,101,NaN,Infinity,'50',null]) {
+      try {display.update({[key]:value});} catch {rejected++;}
+      if(root.getAttribute('style')!==previous)throw Error('Invalid update mutated the DOM');
+    }
+    display.update({glow:100});
+    const sharp=[root.querySelector('.ph-sharp span'),root.querySelector('input')].map(el=>getComputedStyle(el).textShadow);
+    display.destroy();
+    return {zero,sharp,rejected,restored:root.getAttribute('style')===original,attribute:root.getAttribute('data-ph-glow')};
+  });
+  expect(result).toEqual({zero:[{shadow:'none',filter:'none'},{shadow:'none',filter:'none'}],sharp:['none','none'],rejected:18,restored:true,attribute:'30'});
+});
+test('shared setup links round-trip settings and invalid settings fall back visibly', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read','clipboard-write']);
+  await page.goto('/');
+  await page.selectOption('#palette','website:amber');
+  await page.locator('#glow').evaluate(el=>{el.value='35';el.dispatchEvent(new Event('input',{bubbles:true}));});
+  await page.locator('#tab-workbench').click();
+  await page.locator('#share-config').click();
+  const url = await page.evaluate(()=>navigator.clipboard.readText());
+  await page.goto(url);
+  await expect(page.locator('#glow')).toHaveValue('35');
+  await expect(page.locator('#palette')).toHaveValue('website:amber');
+  await expect(page.locator('#tab-workbench')).toHaveAttribute('aria-selected','true');
+  await page.locator('#open-config').click();
+  await expect(page.locator('#config-code')).toContainText('"glow": 35');
+  await page.goto('/#config='+encodeURIComponent(JSON.stringify({view:'optics',glow:-1})));
+  await expect(page.locator('#share-status')).toContainText('invalid settings');
+  await expect(page.locator('#glow')).toHaveValue('100');
+});
 test('website loads local Victor Mono while the unstyled integration host keeps its font', async ({ page }) => {
   const failedFonts = [];
   page.on('response', response => {
     if (response.url().includes('.woff2') && !response.ok()) failedFonts.push(response.url());
   });
-  await page.goto('/');
+  await page.goto('/?view=dashboard');
   await page.evaluate(() => document.fonts.ready);
   for (const selector of [':root', '.site-header', '.intro h1', '#specimen', '.ph-input']) {
     expect(await page.locator(selector).first().evaluate(el => getComputedStyle(el).fontFamily)).toContain('Victor Mono');
@@ -44,13 +129,14 @@ test('component reference loads all font faces and supports native controls, key
   expect(accessibility.violations).toEqual([]);
   for (const width of [720, 390]) {
     await page.setViewportSize({ width, height: 900 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `Overflow at ${width}px`).toBe(true);
   }
   expect(errors).toEqual([]);
 });
 test('all independent controls preserve content and palette changes preserve geometry', async({page})=>{
-  const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');
+  const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/?view=dashboard');
   await expect(page.locator('#queue-rows tr')).toHaveCount(5);
+  await page.evaluate(() => document.fonts.ready);
   const before=await page.locator('#specimen-content').evaluate(el=>({text:el.textContent,rect:el.getBoundingClientRect().toJSON(),font:getComputedStyle(el).font}));
   await page.selectOption('#palette','website:amber');
   const after=await page.locator('#specimen-content').evaluate(el=>({text:el.textContent,rect:el.getBoundingClientRect().toJSON(),font:getComputedStyle(el).font}));
@@ -68,7 +154,7 @@ test('all independent controls preserve content and palette changes preserve geo
   expect(errors).toEqual([]);
 });
 test('filter, record dialog, keyboard focus, and sample refresh work',async({page})=>{
-  await page.goto('/');await page.getByRole('searchbox',{name:'Filter projects'}).fill('field');
+  await page.goto('/?view=dashboard');await page.getByRole('searchbox',{name:'Filter projects'}).fill('field');
   await expect(page.locator('#queue-rows tr:visible')).toHaveCount(1);
   await page.getByRole('button',{name:'Field recorder',exact:true}).click();
   await expect(page.locator('#sample-dialog')).toBeVisible();
@@ -81,7 +167,7 @@ test('filter, record dialog, keyboard focus, and sample refresh work',async({pag
   await page.getByRole('button',{name:'Refresh sample'}).click();await expect(page.locator('#sample-status')).toContainText('Sample refreshed');
 });
 test('specimen and document tabs support arrow keys; drafts remain native',async({page})=>{
-  await page.goto('/');await page.locator('#tab-dashboard').focus();await page.keyboard.press('ArrowRight');
+  await page.goto('/?view=dashboard');await page.locator('#tab-dashboard').focus();await page.keyboard.press('ArrowRight');
   await expect(page.locator('#tab-workbench')).toBeFocused();await expect(page.locator('#tab-workbench')).toHaveAttribute('aria-selected','true');
   await page.locator('#doc-tab-notes').focus();await page.keyboard.press('ArrowRight');await expect(page.locator('#document-view')).toContainText('mountPhosphor');
   await page.getByLabel('Title',{exact:true}).fill('Synthetic field note');await page.getByRole('button',{name:'Save local draft'}).click();
@@ -92,7 +178,7 @@ test('specimen and document tabs support arrow keys; drafts remain native',async
   await expect(page.getByRole('button',{name:'Publish unavailable in demo'})).toBeDisabled();
 });
 test('configuration reflects all settings and copy succeeds',async({page,context})=>{
-  await context.grantPermissions(['clipboard-read','clipboard-write']);await page.goto('/');
+  await context.grantPermissions(['clipboard-read','clipboard-write']);await page.goto('/?view=dashboard');
   await page.selectOption('#palette','website:white');await page.selectOption('#effects','static');await page.locator('#crisp').check();
   await page.locator('#open-config').click();await expect(page.locator('#config-code')).toContainText('"palette": "website:white"');
   await page.locator('#copy-config').click();await expect(page.locator('#copy-status')).toHaveText('Configuration copied.');
@@ -100,7 +186,7 @@ test('configuration reflects all settings and copy succeeds',async({page,context
   await page.keyboard.press('Escape');await expect(page.locator('#open-config')).toBeFocused();
 });
 test('reduced motion retains static glow; crisp text and effects off remove requested layers',async({page})=>{
-  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');
+  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/?view=dashboard');
   const shadows=()=>page.locator('.ph-metric').first().evaluate(el=>getComputedStyle(el).textShadow);
   expect(await shadows()).not.toBe('none');
   expect(await page.locator('#specimen').evaluate(el=>getComputedStyle(el,'::after').display)).not.toBe('none');
@@ -111,7 +197,7 @@ test('reduced motion retains static glow; crisp text and effects off remove requ
   expect(await page.locator('#specimen').evaluate(el=>getComputedStyle(el,'::after').display)).toBe('none');
 });
 test('renderer rests at idle, responds to pointer, caps buffers, and freezes while hidden',async({page})=>{
-  await page.goto('/');await page.waitForTimeout(400);
+  await page.goto('/?view=dashboard');await page.waitForTimeout(400);
   const first=await moduleStats(page);expect(first.context).toBe('webgl');expect(Math.max(first.width,first.height)).toBeLessThanOrEqual(900);
   await page.waitForTimeout(300);expect((await moduleStats(page)).frames).toBe(first.frames);
   await page.locator('.demo-heading h2').hover();await page.waitForTimeout(250);expect((await moduleStats(page)).frames).toBeGreaterThan(first.frames);
@@ -124,12 +210,12 @@ test('renderer rests at idle, responds to pointer, caps buffers, and freezes whi
 });
 test('WebGL unavailability retains CSS and interactive controls',async({page})=>{
   await page.addInitScript(()=>{const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return type==='webgl'?null:original.call(this,type,...args);};});
-  await page.goto('/');expect((await moduleStats(page)).context).toBe('fallback');await expect(page.locator('.ph-ambient')).toBeHidden();
+  await page.goto('/?view=dashboard');expect((await moduleStats(page)).context).toBe('fallback');await expect(page.locator('.ph-ambient')).toBeHidden();
   expect(await page.locator('.ph-metric').first().evaluate(el=>getComputedStyle(el).textShadow)).not.toBe('none');
   await page.locator('#queue-search').fill('field');await expect(page.locator('#queue-rows tr:visible')).toHaveCount(1);
 });
 test('context loss falls back and restoration rebuilds the renderer',async({page})=>{
-  await page.goto('/');await page.waitForTimeout(200);
+  await page.goto('/?view=dashboard');await page.waitForTimeout(200);
   await page.evaluate(()=>{window.testGL=document.querySelector('.ph-ambient').getContext('webgl').getExtension('WEBGL_lose_context');window.testGL.loseContext();});
   await expect.poll(async()=>(await moduleStats(page)).context).toBe('lost');await expect(page.locator('.ph-ambient')).toBeHidden();
   await page.waitForTimeout(150);await page.evaluate(()=>window.testGL.restoreContext());
@@ -161,14 +247,14 @@ test('effects are scoped; removing presentation keeps host behavior and other sc
   await page.locator('#toggle').click();await expect(page.locator('#example canvas')).toHaveCount(1);
 });
 test('hold to compare restores effects after pointer and keyboard release',async({page})=>{
-  await page.goto('/');await page.selectOption('#effects','static');await page.locator('#compare').scrollIntoViewIfNeeded();
+  await page.goto('/?view=dashboard');await page.selectOption('#effects','static');await page.locator('#compare').scrollIntoViewIfNeeded();
   await page.locator('#compare').hover();await page.mouse.down();await expect(page.locator('#specimen')).toHaveAttribute('data-ph-effects','off');
   await page.mouse.up();await expect(page.locator('#specimen')).toHaveAttribute('data-ph-effects','static');
   await page.locator('#compare').focus();await page.keyboard.down('Space');await expect(page.locator('#specimen')).toHaveAttribute('data-ph-effects','off');
   await page.keyboard.up('Space');await expect(page.locator('#specimen')).toHaveAttribute('data-ph-effects','static');
 });
 for(const width of [390,720])test(`all specimens retain controls without page overflow at ${width}px`,async({page})=>{
-  await page.setViewportSize({width,height:950});await page.goto('/');
+  await page.setViewportSize({width,height:950});await page.goto('/?view=dashboard');
   for(const specimen of ['dashboard','website','workbench']){
     await page.locator(`#tab-${specimen}`).click();
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
@@ -178,7 +264,7 @@ for(const width of [390,720])test(`all specimens retain controls without page ov
   }
 });
 test('200% zoom retains content and accessible scrolling',async({page})=>{
-  await page.goto('/');await page.evaluate(()=>document.documentElement.style.zoom='2');
+  await page.goto('/?view=dashboard');await page.evaluate(()=>document.documentElement.style.zoom='2');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await expect(page.locator('#queue-rows tr')).toHaveCount(5);
   const scroll=page.getByRole('region',{name:'Project queue'});await scroll.focus();await expect(scroll).toBeFocused();
@@ -193,7 +279,7 @@ test('high DPI, resize and offscreen rendering keep resources bounded',async({br
 });
 
 test('representative specimens and dialogs have no detected WCAG A/AA violations',async({page})=>{
-  await page.goto('/');
+  await page.goto('/?view=dashboard');
   for(const [specimen,palette] of [['dashboard','dashboard:odyssey-crt'],['website','website:amber'],['workbench','website:white']]){
     await page.locator(`#tab-${specimen}`).click();await page.selectOption('#palette',palette);
     const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
@@ -206,7 +292,7 @@ test('representative specimens and dialogs have no detected WCAG A/AA violations
   }
 });
 test('native text selection and focus remain usable under effects',async({page})=>{
-  await page.goto('/');
+  await page.goto('/?view=dashboard');
   const selected=await page.locator('.demo-heading h2').evaluate(el=>{
     const range=document.createRange();range.selectNodeContents(el);getSelection().removeAllRanges();getSelection().addRange(range);return getSelection().toString();
   });expect(selected).toBe('Build overview');
@@ -217,6 +303,6 @@ test('native text selection and focus remain usable under effects',async({page})
 });
 test('shader compilation failure falls back without a broken canvas',async({page})=>{
   await page.addInitScript(()=>{const original=WebGLRenderingContext.prototype.getShaderParameter;WebGLRenderingContext.prototype.getShaderParameter=function(shader,pname){return pname===this.COMPILE_STATUS?false:original.call(this,shader,pname);};});
-  await page.goto('/');expect((await moduleStats(page)).context).toBe('fallback');await expect(page.locator('.ph-ambient')).toBeHidden();
+  await page.goto('/?view=dashboard');expect((await moduleStats(page)).context).toBe('fallback');await expect(page.locator('.ph-ambient')).toBeHidden();
   await page.locator('#open-config').click();await expect(page.locator('#config-dialog')).toBeVisible();
 });

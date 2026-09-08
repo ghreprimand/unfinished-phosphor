@@ -23,3 +23,7 @@ Palette IDs retain their existing `dashboard:` and `website:` namespaces. The na
 The build includes Vite runtime helpers; their MIT notice accompanies the demo. Playwright and axe-core are development tools and are not imported into production. Their installed packages retain their respective notices.
 
 The demo includes the toolkit license, third-party notices, and an archive of the exact standalone sources and build inputs. Package metadata retains `private: true` to prevent accidental npm publication. That setting does not restrict access to the public source repository.
+
+## Presentation mechanisms
+
+The optical controls extend Unfinished Works’ own presentation mechanisms: foreground-aware glyph emission, tighter glow for working interfaces, sharp editor surfaces, and independent stationary raster/glass strength. They are implemented here with scoped CSS and a framework-independent lifecycle. No application data or reference screenshots are bundled. The new typography and color-response specimen uses native HTML and CSS, with no additional third-party assets.
