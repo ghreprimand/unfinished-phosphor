@@ -3,7 +3,44 @@
  */
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { readFileSync } from 'node:fs';
 const moduleStats = page => page.evaluate(async()=>(await import('/playground/main.js')).ambient.stats);
+test('getting-started HTML and named-palette recipe run directly from the documentation', async ({ page }) => {
+  const guide = readFileSync(new URL('../../docs/getting-started.md', import.meta.url), 'utf8');
+  const examples = [...guide.matchAll(/```html\n([\s\S]*?)```/g)].map(match => match[1]);
+  expect(examples).toHaveLength(2);
+  const html = examples[0].replace('<main data-phosphor', '<main id="my-interface" data-phosphor').replace('</body>', examples[1] + '</body>').replaceAll('./vendor/phosphor/', '/');
+  await page.route('**/documentation-example', route => route.fulfill({ contentType: 'text/html', body: html }));
+  const errors = []; page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/documentation-example');
+  await page.evaluate(() => document.fonts.ready);
+  const root = page.locator('#my-interface');
+  await expect(root).toHaveAttribute('data-ph-palette', 'website:amber');
+  await expect(root).toHaveAttribute('data-ph-glow', '50');
+  await expect(root).toHaveAttribute('data-ph-density', 'comfortable');
+  expect(await root.evaluate(el => getComputedStyle(el).fontFamily)).toContain('Victor Mono');
+  expect(await page.locator('.ph-panel-heading').evaluate(el => getComputedStyle(el).textShadow)).not.toBe('none');
+  await page.getByRole('link', { name: 'View details' }).click();
+  await expect(page.locator('#details')).toBeVisible();
+  expect(errors).toEqual([]);
+});
+test('all catalog palettes render through swatches and preserve the optics specimen', async ({ page }) => {
+  await page.goto('/'); await page.evaluate(() => document.fonts.ready);
+  const options = await page.locator('#palette option').evaluateAll(nodes => nodes.map(el => ({id:el.value,name:el.textContent})));
+  expect(options).toHaveLength(12);
+  await expect(page.locator('#quick-palettes button')).toHaveCount(options.length);
+  const content = page.locator('.type-primary');
+  const measure = () => content.evaluate(el => ({text:el.textContent,font:getComputedStyle(el).font,rect:el.getBoundingClientRect().toJSON()}));
+  const before = await measure();
+  for (const option of options) {
+    await page.locator(`#quick-palettes [data-palette="${option.id}"]`).click();
+    await expect(page.locator('#palette')).toHaveValue(option.id);
+    await expect(page.locator('#specimen')).toHaveAttribute('data-ph-palette', option.id);
+    expect(await measure()).toEqual(before);
+    const result = await new AxeBuilder({ page }).include('#specimen').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+    expect(result.violations, option.name).toEqual([]);
+  }
+});
 test('optics landing exposes independent controls without blurring or moving native type', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => document.fonts.ready);

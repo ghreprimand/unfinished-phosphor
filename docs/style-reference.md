@@ -48,6 +48,39 @@ Use a class on your scope to override optical variables. This example reduces gl
 
 These low-level CSS variables remain available. The public JavaScript controls are `glow`, `raster`, and `glass`, each 0–100. For CSS-only scopes, set `--ph-glow`, `--ph-raster-strength`, and `--ph-glass-strength` to fractions from 0 to 1. `--ph-raster-opacity` remains the master overlay opacity; RGB mask/lines share one control and reflection/vignette share another. `glass: 0` does not remove panel backgrounds, static fog, or ambient light. Ambient light is a separate renderer, so use `effects: 'static'` when comparing CSS intensity alone. At `glow: 0`, text shadows and metric halo filters are removed. Crisp text and effects-off override the stored optical values. Retest readability after changing values.
 
+### CSS variables and attributes
+
+The [integration guide](integration.md) lists the 24 semantic color tokens; [Palettes](palettes.md) explains how to export their actual values. These additional variables control typography and geometry:
+
+| Variable | Bare core default | Website preset override |
+| --- | --- | --- |
+| `--ph-size` | `13px` | `15px` |
+| `--ph-halo-core` | `2px` | `3px` |
+| `--ph-halo-soft` | `7px` | `12px` |
+| `--ph-halo-wide` | `20px` | `28px` |
+| `--ph-halo-alpha` | `54%` | `64%` |
+| `--ph-offset` | `.7px` | `1px` |
+| `--ph-fog-alpha` | `9%` | `12%` |
+| `--ph-glow` | `1` | Unchanged |
+| `--ph-raster-strength` | `1` | Unchanged |
+| `--ph-glass-strength` | `1` | Unchanged |
+| `--ph-raster-opacity` | `.64` | Unchanged |
+
+`--ph-font` supplies the scope font family. `--ph-shadow` is the composed native text-shadow value; prefer the documented intensity controls over replacing that expression. Title and metric emphasis have separate shadow expressions that still follow `--ph-glow`. Changing the general halo variables alone does not rewrite those emphasis expressions.
+
+| Spacing variable | No density attribute | `compact` | `comfortable` |
+| --- | --- | --- | --- |
+| `--ph-pad` | `12px` | `10px` | `18px` |
+| `--ph-gap` | `10px` | `8px` | `16px` |
+| `--ph-cell-y` | `7px` | `5px` | `10px` |
+| `--ph-cell-x` | `12px` | `9px` | `14px` |
+
+The JavaScript default sets `data-ph-density="compact"`; a bare CSS-only scope with no density attribute uses the first column. Optional components have some explicit font sizes, so changing the root size is not a universal zoom control. Consumer page widths, grid columns, responsive breakpoints, and font scaling remain application CSS. The display lab's 3200px maximum width is not imposed by the core.
+
+`data-phosphor` activates the scope. CSS-only consumers can set `data-ph-preset`, `data-ph-density`, `data-ph-effects`, `data-ph-crisp`, and `data-ph-font` directly. Named colors still require the adapter or an exported stylesheet. `data-ph-glow="0"` is a zero-shadow removal marker written by the adapter; arbitrary numeric attribute values do not set intensity. For CSS-only intensity use the fraction variables, and add that zero marker when you want computed shadows/filters removed completely at zero. Remove the marker when increasing the fraction again.
+
+Load host overrides after the toolkit and target a class on the scope, for example `.my-interface[data-phosphor]`. Mounted palette and optical variables are inline and owned by JavaScript; use `display.update()` for them. Neither CSS-only variable overrides nor attributes validate ranges or color contrast.
+
 ## Optional component classes
 
 Load `components.css` after the core. These are styling primitives; they do not create widgets or event handlers.

@@ -1,6 +1,6 @@
 # Integration and adaptation
 
-Start with [Getting started](getting-started.md) for file-copy instructions and complete HTML. The [style reference](style-reference.md) covers fonts, intensity controls, and component classes.
+Start with [Getting started](getting-started.md) for file-copy instructions and complete HTML. The [style reference](style-reference.md) covers fonts, intensity controls, and component classes. Use the [API reference](api.md) for module exports, method behavior, events, and errors; see the [documentation index](README.md) for all guides.
 
 ## Configuration contract
 

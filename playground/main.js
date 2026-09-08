@@ -36,7 +36,7 @@ for (const category of [...new Set(palettes.map(p => p.category))]) {
   paletteSelect.append(group);
 }
 $('#palette-count').textContent = palettes.length;
-const quick = ['dashboard:odyssey-crt','website:amber','website:white','dashboard:nord','dashboard:dracula','dashboard:catppuccin'];
+const quick = [defaults.palette, ...palettes.filter(p => p.id !== defaults.palette).map(p => p.id)];
 for (const id of quick) {
   const palette = palettes.find(p => p.id === id); const button = document.createElement('button');
   button.type = 'button'; button.title = palette.name; button.setAttribute('aria-label',palette.name); button.dataset.palette = id;

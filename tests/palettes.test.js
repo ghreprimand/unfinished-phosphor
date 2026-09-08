@@ -8,19 +8,22 @@ import { palettes, resolvePalette, contrast, paletteProvenance } from '../src/pa
 import snapshot from '../src/palette-snapshot.json' with { type: 'json' };
 
 test('snapshot maps every source ID, name, category, and color without collisions', () => {
-  assert.equal(paletteProvenance.count, 4);
-  assert.equal(palettes.length, 7);
-  assert.deepEqual(snapshot.palettes.map(p => p.id), ['odyssey-crt', 'nord', 'dracula', 'catppuccin']);
+  assert.equal(paletteProvenance.count, 9);
+  assert.equal(palettes.length, 12);
+  assert.deepEqual(snapshot.palettes.map(p => p.id), ['odyssey-crt', 'nord', 'dracula', 'catppuccin', 'gruvbox', 'solarized-dark', 'tokyo-night', 'rose-pine', 'everforest-dark']);
   assert.equal(new Set(palettes.map(p => p.id)).size, palettes.length);
   for (const original of snapshot.palettes) {
     const mapped = palettes.find(p => p.id === `dashboard:${original.id}`);
     for (const [key, value] of Object.entries(original)) if (key !== 'id') assert.deepEqual(mapped[key], value);
-    if (original.id !== 'odyssey-crt') {
+    if (original.provenance.upstream) {
       assert.equal(original.provenance.upstreamLicense, 'MIT');
       assert.match(original.provenance.revision, /^[a-f0-9]{40}$/);
       assert.ok(original.provenance.source.includes(original.provenance.revision));
       assert.ok(original.provenance.licenseSource.includes(original.provenance.revision));
       assert.match(original.provenance.sourceSha256, /^[a-f0-9]{64}$/);
+    } else {
+      assert.equal(original.provenance.license, 'GPL-3.0-only');
+      assert.ok(original.provenance.author);
     }
   }
   assert.match(paletteProvenance.sha256, /^[a-f0-9]{64}$/);

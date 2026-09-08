@@ -4,9 +4,9 @@ Unfinished Phosphor's own code and palette adaptations are GPL-3.0-only. The ups
 
 ## Included palette adaptations
 
-The first public catalog includes Odyssey CRT, three website phosphors, and adaptations of Nord, Dracula, and Catppuccin Mocha. Other palettes from local development are excluded from this repository and its source download until their upstream terms are reviewed.
+The public catalog includes four Phosphor variants and eight community adaptations: Nord, Dracula, Catppuccin Mocha, Gruvbox Dark, Solarized Dark, Tokyo Night, Rosé Pine, and Everforest Dark. Each community adaptation has pinned upstream sources and preserved notices below.
 
-The three community adaptations were rebuilt from the pinned sources below on 2026-09-08. Colors are mapped into Phosphor's interface roles; the resolver can adjust foreground colors for contrast and derives glass/emission values. These are adapted UI palettes, not official ports or copies of any paid theme edition.
+The eight community adaptations were rebuilt from the pinned sources below on 2026-09-08. Colors are mapped into Phosphor's interface roles; the resolver can adjust foreground colors for contrast and derives glass/emission values. These are adapted UI palettes, not official ports or copies of any paid theme edition.
 
 ## Nord
 
@@ -78,6 +78,165 @@ License source: https://raw.githubusercontent.com/catppuccin/palette/07d02aa110e
 MIT License
 
 Copyright (c) 2021 Catppuccin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## Gruvbox Dark
+
+Palette source: https://raw.githubusercontent.com/gruvbox-community/gruvbox/180ad85971343df68be3422a5630fa84e45a9ab2/colors/gruvbox.vim
+
+License source: https://raw.githubusercontent.com/gruvbox-community/gruvbox/180ad85971343df68be3422a5630fa84e45a9ab2/LICENSE.md
+
+Dark palette, using the community-maintained Gruvbox sources.
+
+```text
+MIT License
+
+Copyright (c) 2018 Pavel Pertsev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## Solarized Dark
+
+Palette source: https://raw.githubusercontent.com/altercation/solarized/62f656a02f93c5190a8753159e34b385588d5ff3/README.md
+
+License source: https://raw.githubusercontent.com/altercation/solarized/62f656a02f93c5190a8753159e34b385588d5ff3/LICENSE
+
+Dark variant. Foregrounds are lifted by the resolver for contrast; the result is not an exact Solarized rendering.
+
+```text
+Copyright (c) 2011 Ethan Schoonover
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
+
+## Tokyo Night
+
+Palette source: https://raw.githubusercontent.com/enkia/tokyo-night-vscode-theme/7c0f11eaef322f293621ca7befe462214b7ea468/themes/tokyo-night-color-theme.json
+
+License source: https://raw.githubusercontent.com/enkia/tokyo-night-vscode-theme/7c0f11eaef322f293621ca7befe462214b7ea468/LICENSE.txt
+
+Night variant from Enkia’s original VS Code theme.
+
+```text
+The MIT License (MIT)
+
+Copyright (c) 2018-present Enkia
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+## Rosé Pine
+
+Palette source: https://raw.githubusercontent.com/rose-pine/palette/92af52b465ab6e47437aca223c9b8d3009a2023b/palette.json
+
+License source: https://raw.githubusercontent.com/rose-pine/palette/92af52b465ab6e47437aca223c9b8d3009a2023b/LICENSE
+
+Original main variant. The upstream palette has no green hue; its pine role maps to success with a text label.
+
+```text
+MIT License
+
+Copyright (c) mvllow
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## Everforest Dark
+
+Palette source: https://raw.githubusercontent.com/sainnhe/everforest/85a86eb62409e3ec88713bff3d1b9d7374e112e4/autoload/everforest.vim
+
+License source: https://raw.githubusercontent.com/sainnhe/everforest/85a86eb62409e3ec88713bff3d1b9d7374e112e4/LICENSE
+
+Dark, medium-background variant.
+
+```text
+MIT License
+
+Copyright (c) 2019 sainnhe
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

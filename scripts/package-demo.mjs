@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 // Explicit publication boundary: never archive the worktree or an entire directory.
 const files = [
-  'LICENSE', 'THIRD_PARTY_NOTICES.md', 'README.md', '.node-version',
+  'LICENSE', 'THIRD_PARTY_NOTICES.md', 'README.md', 'CONTRIBUTING.md', '.node-version',
   'package.json', 'package-lock.json', 'vite.config.js', 'playwright.config.js',
   'index.html', 'examples/plain.html', 'examples/components.html', 'examples/components.js', 'examples/components.css',
   'src/index.js', 'src/ambient.js', 'src/palettes.js', 'src/palette-snapshot.json',
@@ -17,8 +17,9 @@ const files = [
   'fonts/victor-mono/VictorMono-Regular.woff2', 'fonts/victor-mono/VictorMono-Italic.woff2',
   'fonts/victor-mono/VictorMono-Bold.woff2', 'fonts/victor-mono/VictorMono-BoldItalic.woff2',
   'playground/main.js', 'playground/optics.js', 'playground/specimens.js', 'playground/playground.css',
+  'docs/README.md', 'docs/api.md', 'docs/palettes.md', 'docs/accessibility-performance.md', 'docs/troubleshooting.md',
   'docs/integration.md', 'docs/provenance.md', 'docs/deployment.md', 'docs/getting-started.md', 'docs/style-reference.md', 'docs/adapters.md',
-  'scripts/package-demo.mjs', 'scripts/check-engines.mjs', 'scripts/snapshot-palettes.mjs',
+  'scripts/package-demo.mjs', 'scripts/check-engines.mjs', 'scripts/check-docs.mjs', 'scripts/snapshot-palettes.mjs',
   'tests/palettes.test.js', 'tests/browser/playground.spec.js',
 ];
 for (const name of files) {

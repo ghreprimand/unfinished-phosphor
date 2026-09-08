@@ -4,7 +4,7 @@ The demo is static and is configured for the `unfinished-phosphor` Cloudflare Pa
 
 ## Before the first public upload
 
-The public edition contains four Phosphor variants and three community adaptations with pinned upstream sources and MIT notices. Unreviewed palettes are omitted. Apply the same source-and-notice review before adding further imported palettes.
+The public edition contains four Phosphor variants and eight community adaptations with pinned upstream sources and MIT notices. Unreviewed palettes are omitted. Apply the same source-and-notice review before adding further imported palettes.
 
 Run `npm run check`, inspect the exact files selected for the public commit, and review the resulting source archive. Keep private workflow artifacts, screenshots, environment files, and sibling application code out of the commit. Commit and push complete build inputs, including `package.json`, `package-lock.json`, and `.node-version`, before triggering a Git-based build.
 

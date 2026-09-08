@@ -11,7 +11,7 @@ npm ci --include=dev
 npm run dev
 ```
 
-Use Node.js 24.19.0. Open the address Vite prints, normally `http://localhost:5173/`. The [playground](https://phosphor.unfinished-works.com/) lets you compare presets and palettes. The [component reference](https://phosphor.unfinished-works.com/examples/components.html) shows reusable markup; the [HTML integration](https://phosphor.unfinished-works.com/examples/plain.html) demonstrates isolated scopes in a differently styled page.
+Use Node.js 24.19.0. Building the downloadable-source archive also requires GNU `tar`; use GNU/Linux or WSL for that packaging path. Open the address Vite prints, normally `http://localhost:5173/`. The [playground](https://phosphor.unfinished-works.com/) lets you compare presets and palettes. The [component reference](https://phosphor.unfinished-works.com/examples/components.html) shows reusable markup; the [HTML integration](https://phosphor.unfinished-works.com/examples/plain.html) demonstrates isolated scopes in a differently styled page.
 
 ## Add it to an existing project
 
@@ -76,7 +76,7 @@ Give the container an ID, such as `id="my-interface"`, and add this module scrip
 </script>
 ```
 
-Import `palettes` from `src/index.js` to list the available `{ id, name }` entries. `data-ph-palette` alone does not load a named palette; `mountPhosphor` writes its color variables. The playground's **Get configuration** button produces JavaScript settings, so the stylesheets and container still need to be present.
+Import `palettes` from `src/index.js` to list the available `{ id, name }` entries. See [Palettes](palettes.md) for all twelve IDs, CSS-only export, and custom-color instructions. `data-ph-palette` alone does not load a named palette; `mountPhosphor` writes its color variables. The playground's **Get configuration** button produces JavaScript settings, so the stylesheets and container still need to be present.
 
 For optional ambient light, set `effects: 'on'`, import `mountAmbient` from `src/ambient.js`, then call `mountAmbient(root)` after mounting Phosphor. `display.destroy()` also cleans up its ambient instance. Reduced motion and unsupported WebGL retain static CSS styling.
 

@@ -4,9 +4,9 @@
 
 Illuminated text, dark glass, stationary raster, and optional ambient light for native web interfaces.
 
-> **Status: experimental demonstration.** The toolkit code is licensed under GPL-3.0-only. The first public edition includes seven palettes with documented origins. No npm package is published.
+> **Status: experimental demonstration.** The toolkit code is licensed under GPL-3.0-only. The public edition includes twelve palettes with documented origins. No npm package is published.
 
-[Open the demo](https://phosphor.unfinished-works.com/) · [Getting started](docs/getting-started.md) · [Component reference](https://phosphor.unfinished-works.com/examples/components.html) · [Integration guide](docs/integration.md) · [Third-party credits](THIRD_PARTY_NOTICES.md)
+[Open the demo](https://phosphor.unfinished-works.com/) · [Documentation](docs/README.md) · [Getting started](docs/getting-started.md) · [Component reference](https://phosphor.unfinished-works.com/examples/components.html) · [Integration guide](docs/integration.md) · [Third-party credits](THIRD_PARTY_NOTICES.md)
 
 ## License
 
@@ -89,7 +89,7 @@ The `data-ph-palette` attribute is descriptive metadata; selecting a catalog pal
 | Core | Scoped CSS variables, emission, raster, fog, focus and selection |
 | Presets | Expressive website and restrained dashboard presentation |
 | Density | Compact or comfortable spacing, independent of type size |
-| Palettes | Four Phosphor palettes plus adapted Nord, Dracula, and Catppuccin Mocha palettes, with pinned upstream sources |
+| Palettes | Four Phosphor palettes plus eight community adaptations, with [catalog IDs and pinned sources](docs/palettes.md) |
 | Ambient | Optional WebGL, event-driven pointer response, static CSS fallback |
 | Typography | Self-hosted Victor Mono on the website; optional font stylesheet for consumers |
 | Primitives | Native panels, controls, tables, tabs, notices, code and dialogs |
@@ -122,7 +122,7 @@ Cloudflare Pages can host the static `dist/` output. The build includes license 
 
 [Report a bug or suggest a change](https://github.com/ghreprimand/unfinished-phosphor/issues). For rendering problems, include your browser and version, operating system, steps to reproduce, expected result, and the configuration copied from the playground. Use a minimal example with synthetic data.
 
-For code changes, explain the resulting behavior and run `npm run check`. Keep native controls accessible and preserve reduced-motion behavior. Contributions to toolkit code use GPL-3.0-only; imported material must include its upstream source and applicable license notices. Do not include private application data or screenshots.
+See [Contributing](CONTRIBUTING.md) for setup, source layout, documentation checks, and publication review. For code changes, explain the resulting behavior and run `npm run check`. Keep native controls accessible and preserve reduced-motion behavior. Contributions to toolkit code use GPL-3.0-only; imported material must include its upstream source and applicable license notices. Do not include private application data or screenshots.
 
 The full browser suite targets Chromium. Additional Firefox smoke checks cover native type/overlays, fonts, optical controls, palette switching, tabs, reduced motion, three viewport widths, dialogs, and forms. Safari and real-device validation remain outstanding.
 

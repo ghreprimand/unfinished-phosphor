@@ -80,6 +80,55 @@ export function Display({ children, glow = 50 }) {
 
 Load the stylesheets once from the application entry. This recipe illustrates lifecycle ownership; React is not a dependency and this repository does not test a React build. The same ownership rules apply to other frameworks. For portals, keep dialogs inside the scope or provide a separate token/scope bridge as described in the [integration guide](integration.md).
 
+## Scrolling and application layout
+
+Apply presentation to natural-height contents inside a scrolling viewport. The viewport remains an application-owned element:
+
+```html
+<div class="application-scroll" tabindex="0" role="region" aria-label="Measurements">
+  <section id="measurements" data-phosphor data-ph-effects="static">
+    <!-- Your full-height content, tables, and controls. -->
+  </section>
+</div>
+```
+
+```css
+.application-scroll { max-height: 70dvh; overflow: auto; }
+#measurements { min-height: 100%; padding: 1rem; }
+```
+
+Keep layout breakpoints in your application's stylesheets. Use `min-width: 0` on shrinking grid/flex children and a labelled `.ph-table-scroll` wrapper for a table that cannot reflow. The core does not add the playground's columns, max-width, or 4K typography scaling to a consumer.
+
+For a portal rendered outside the root, choose either an independently mounted sibling scope or a host bridge that copies the needed CSS variables and font. A token bridge provides colors but does not automatically give the portal core selectors or ambient behavior. Avoid nested Phosphor scopes because their overlays and inherited shadows can combine. Prefer a native `<dialog>` inside the scope when that fits the host's interaction model.
+
+## Host-owned preferences
+
+The core and playground do not persist settings. If your application chooses local storage, handle unavailable storage and invalid/outdated settings separately from presentation:
+
+```js
+import { mountPhosphor } from './vendor/phosphor/src/index.js';
+
+const root = document.querySelector('#interface');
+let saved = {};
+try {
+  const value = JSON.parse(localStorage.getItem('my-app-display') || '{}');
+  if (value && typeof value === 'object' && !Array.isArray(value)) saved = value;
+} catch { /* Storage unavailable or invalid JSON: use defaults. */ }
+
+let display;
+try { display = mountPhosphor(root, saved); }
+catch { display = mountPhosphor(root); } // Invalid configuration: use defaults.
+
+function saveDisplayPreference() {
+  try { localStorage.setItem('my-app-display', JSON.stringify(display.config)); }
+  catch { /* The current display still works without persistence. */ }
+}
+// Call saveDisplayPreference() on a committed host preference change.
+// Call display.destroy() in the application's cleanup hook.
+```
+
+This recipe deliberately adds persistence to the host. Use an application-specific key, migrate stored configurations when changing your vendored API version, and retain OS preference precedence. Do not store drafts or application data in a shared display-config link. When synchronizing preferences to a server, use the host's existing validation and authorization rather than adding network behavior to the renderer.
+
 ## Deliberate boundaries
 
 Boot sequences, scrambled-text reveals, audio feedback, command interpreters, screensavers, application dashboards, and navigation systems belong to the host application. They are not prerequisites for the CRT treatment and are not shipped as toolkit behavior. No additional private application data, theme catalogs, or font assets are required by these recipes.
