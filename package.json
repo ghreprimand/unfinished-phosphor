@@ -10,7 +10,8 @@
     "./ambient": "./src/ambient.js",
     "./core.css": "./src/core.css",
     "./components.css": "./src/components.css",
-    "./palettes": "./src/palettes.js"
+    "./palettes": "./src/palettes.js",
+    "./fonts.css": "./src/fonts.css"
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",

@@ -1,0 +1,23 @@
+/* SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 Unfinished Works
+ * Font files: Victor Mono by Rune Bjørnerås, OFL-1.1. See fonts/victor-mono/LICENSE.
+ */
+@font-face {
+  font-family: 'Victor Mono'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('../fonts/victor-mono/VictorMono-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Victor Mono'; font-style: italic; font-weight: 400; font-display: swap;
+  src: url('../fonts/victor-mono/VictorMono-Italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Victor Mono'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('../fonts/victor-mono/VictorMono-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Victor Mono'; font-style: italic; font-weight: 700; font-display: swap;
+  src: url('../fonts/victor-mono/VictorMono-BoldItalic.woff2') format('woff2');
+}
+:where([data-phosphor][data-ph-font='victor-mono']) {
+  --ph-font: 'Victor Mono', ui-monospace, monospace;
+}

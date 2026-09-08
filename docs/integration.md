@@ -1,5 +1,7 @@
 # Integration and adaptation
 
+Start with [Getting started](getting-started.md) for file-copy instructions and complete HTML. The [style reference](style-reference.md) covers fonts, intensity controls, and component classes.
+
 ## Configuration contract
 
 `mountPhosphor(element, options)` decorates an existing container and returns an object with `config`, `update(patch)`, and `destroy()`.
@@ -90,4 +92,4 @@ This implementation does not animate ambient light continuously. It has no movin
 
 ## Local delivery and boundaries
 
-The Vite build produces a static demo with playground and plain HTML entries, license notices, and a matching source archive. It is not an npm release pipeline. JSON catalog import attributes and modern CSS (`color-mix`, container queries) require current browsers; Chromium is the tested browser. The toolkit code and examples use GPL-3.0-only. The public palette selection includes pinned upstream sources and notices. See [deployment instructions](deployment.md) before public distribution.
+The Vite build produces a static demo with playground, component reference, and plain HTML entries, license notices, and a matching source archive. It is not an npm release pipeline. JSON catalog import attributes and modern CSS (`color-mix`, container queries) require current browsers; Chromium is the tested browser. The toolkit code and examples use GPL-3.0-only. The public palette selection includes pinned upstream sources and notices. See [deployment instructions](deployment.md) before public distribution.

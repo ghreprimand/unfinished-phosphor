@@ -9,5 +9,5 @@ export default defineConfig({
       return context.server ? html.replaceAll('href="/source.tgz"', 'href="/dist/source.tgz"') : html;
     },
   }],
-  build: { rollupOptions: { input: { playground: 'index.html', plain: 'examples/plain.html' } } },
+  build: { rollupOptions: { input: { playground: 'index.html', plain: 'examples/plain.html', components: 'examples/components.html' } } },
 });

@@ -1,0 +1,25 @@
+/* SPDX-License-Identifier: GPL-3.0-only; Copyright (C) 2026 Unfinished Works */
+:root { color-scheme: dark; font: 14px/1.7 'Victor Mono', ui-monospace, monospace; color: #e5e5e5; background: #171717; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, select, textarea { font: inherit; }
+a { color: inherit; text-underline-offset: 4px; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+[hidden] { display: none !important; }
+.reference-header, .reference-footer { max-width: 1180px; margin: auto; padding: 28px; }
+.reference-header nav, .reference-controls, .reference-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.reference-header h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.4; font-weight: 400; }
+.reference-header p { max-width: 85ch; color: #bdbdbd; }
+.reference-controls select { max-width: 100%; margin-left: 8px; padding: 8px; background: #252525; color: inherit; border: 1px solid #777; }
+#reference { max-width: 1124px; margin: 0 auto; padding: 28px; }
+#reference > section { margin-bottom: 36px; }
+#reference h2 { font-size: 22px; }
+.reference-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.reference-grid > * { min-width: 0; }
+#reference pre { margin-top: 16px; max-width: 100%; }
+#reference code { font-family: inherit; }
+#reference fieldset { border: 1px solid var(--ph-control); margin: 16px 0; }
+#reference summary { cursor: pointer; }
+#reference details { margin-top: 20px; }
+.reference-footer { font-size: 12px; }
+@media (max-width: 720px) { .reference-grid { grid-template-columns: 1fr; } #reference, .reference-header, .reference-footer { padding: 20px; } }

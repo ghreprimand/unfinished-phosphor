@@ -8,7 +8,7 @@ This edition contains seven palettes: Odyssey CRT, P1 Green, P3 Amber, P4 White,
 
 The three community adaptations were rebuilt on 2026-09-08 from the exact upstream commits recorded in `src/palette-snapshot.json`. Each entry records the source URL, commit, source-file SHA-256, MIT license URL, author, and mapping from upstream color names to Phosphor interface roles. The resolver derives glass and emission colors and adjusts foregrounds for contrast. These adaptations do not imply upstream endorsement.
 
-The original Phosphor presentation mechanisms and four palette variants come from Unfinished Works. Application data, private screenshots, and workstation context are not included. Fonts use browser/system fonts; no font, image, or sound assets are bundled.
+The original Phosphor presentation mechanisms and four palette variants come from Unfinished Works. Application data, private screenshots, and workstation context are not included. The website bundles four unchanged Victor Mono WOFF2 fonts by Rune Bjørnerås under SIL OFL 1.1. Their pinned sources and hashes are in [the font manifest](../fonts/victor-mono/provenance.json); the full [font license](../fonts/victor-mono/LICENSE) is also included in third-party notices. The toolkit uses system fonts unless a consumer opts into the font stylesheet. No image or sound assets are bundled.
 
 ## Editable catalog
 

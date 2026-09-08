@@ -1,0 +1,67 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-only; Copyright (C) 2026 Unfinished Works -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Native HTML elements styled with Unfinished Phosphor, with markup examples.">
+  <title>Component reference — Unfinished Phosphor</title>
+  <link rel="stylesheet" href="../src/core.css"><link rel="stylesheet" href="../src/components.css">
+  <link rel="stylesheet" href="../src/fonts.css"><link rel="stylesheet" href="./components.css">
+</head>
+<body>
+  <header class="reference-header"><nav aria-label="Main navigation"><a href="../">← Phosphor playground</a><a href="./plain.html">HTML integration</a><a href="https://github.com/ghreprimand/unfinished-phosphor/blob/main/docs/getting-started.md">Getting started</a></nav>
+    <h1>Component reference</h1><p>Native HTML with the optional component stylesheet. The examples below show the classes you can reuse; your application supplies the layout and behavior.</p>
+    <div class="reference-controls"><label for="palette">Palette <select id="palette"></select></label><label for="effects">Effects <select id="effects"><option value="static">Static CRT</option><option value="on">Ambient</option><option value="off">Off</option></select></label></div>
+  </header>
+  <main id="reference" data-phosphor data-ph-font="victor-mono" data-ph-effects="static">
+    <section aria-labelledby="type-heading"><h2 id="type-heading" class="ph-title">Type and emission</h2><p>Victor Mono: regular, <strong>bold</strong>, <em>italic</em>, and <strong><em>bold italic</em></strong>. The website hosts its own font files.</p><p class="ph-muted">Muted text stays readable against the panel surface.</p><p><span class="ph-metric">128</span> <span class="ph-accent">recordings indexed</span></p>
+      <pre class="ph-code"><code>&lt;h2 class="ph-title"&gt;Type and emission&lt;/h2&gt;
+&lt;span class="ph-metric"&gt;128&lt;/span&gt;
+&lt;p class="ph-muted"&gt;Supporting text&lt;/p&gt;</code></pre>
+    </section>
+    <section aria-labelledby="panel-heading"><h2 id="panel-heading" class="ph-title">Panels and actions</h2><div class="reference-grid"><article class="ph-panel"><h3 class="ph-panel-heading">Recording archive</h3><div class="ph-panel-body"><p>Panels use the current palette and density settings.</p><div class="reference-row"><button class="ph-button ph-button-primary" id="open-dialog">Open dialog</button><a class="ph-button" href="./plain.html">HTML example</a><button class="ph-button" disabled>Unavailable</button></div></div></article>
+      <pre class="ph-code"><code>&lt;article class="ph-panel"&gt;
+  &lt;h3 class="ph-panel-heading"&gt;Archive&lt;/h3&gt;
+  &lt;div class="ph-panel-body"&gt;
+    &lt;button class="ph-button ph-button-primary"&gt;
+      Open
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre></div>
+    </section>
+    <section aria-labelledby="fields-heading"><h2 id="fields-heading" class="ph-title">Fields and validation</h2><div class="reference-grid"><form id="reference-form" class="ph-panel ph-panel-body"><label class="ph-field" for="recording">Recording name<input class="ph-input" id="recording" value="Rain at the station" required></label><label class="ph-field" for="format">Format<select class="ph-input" id="format"><option>WAV</option><option>FLAC</option></select></label><label class="ph-field" for="notes">Notes<textarea class="ph-input" id="notes" rows="3" placeholder="Add a recording note"></textarea></label><label class="ph-field" for="reference-id">Invalid field example<input class="ph-input" id="reference-id" value="?" aria-invalid="true" aria-describedby="reference-error"></label><p id="reference-error" class="ph-danger">Use letters and numbers for an archive ID. This is a fixed validation example.</p><p><label><input type="checkbox" checked> Keep the original file</label></p><fieldset><legend>Channels</legend><label><input type="radio" name="channels" checked> Stereo</label> <label><input type="radio" name="channels"> Mono</label></fieldset><button class="ph-button" type="submit">Try form</button><p id="form-status" role="status">Sample only; nothing is uploaded or saved.</p></form>
+      <pre class="ph-code"><code>&lt;label class="ph-field" for="name"&gt;
+  Recording name
+  &lt;input class="ph-input" id="name" required&gt;
+&lt;/label&gt;
+
+&lt;input class="ph-input" aria-invalid="true"
+  aria-describedby="error"&gt;
+&lt;p id="error" class="ph-danger"&gt;
+  Explain how to fix the value.
+&lt;/p&gt;</code></pre></div>
+    </section>
+    <section aria-labelledby="status-heading"><h2 id="status-heading" class="ph-title">Status and notices</h2><p class="reference-row"><span class="ph-badge ph-success">Complete</span><span class="ph-badge ph-warning">Needs review</span><span class="ph-badge ph-danger">Failed</span><span class="ph-badge ph-info">Queued</span></p><p class="ph-notice">Use text to explain status. Color is supplementary; notices are ordinary content unless your application makes them live announcements.</p><pre class="ph-code"><code>&lt;span class="ph-badge ph-success"&gt;Complete&lt;/span&gt;
+&lt;p class="ph-notice"&gt;12 recordings are ready to review.&lt;/p&gt;</code></pre></section>
+    <section aria-labelledby="table-heading"><h2 id="table-heading" class="ph-title">Tables</h2><div class="ph-table-scroll" role="region" aria-label="Recording table" tabindex="0"><table class="ph-table"><caption>Sample recording files</caption><thead><tr><th scope="col">File</th><th scope="col">Duration</th><th scope="col">Format</th><th scope="col">State</th></tr></thead><tbody><tr><td>rain-at-the-station.wav</td><td>04:32</td><td>48 kHz / 24-bit</td><td class="ph-success">Complete</td></tr><tr><td>footsteps-in-the-hall.flac</td><td>01:18</td><td>48 kHz / 24-bit</td><td class="ph-warning">Needs review</td></tr></tbody></table></div><pre class="ph-code"><code>&lt;div class="ph-table-scroll" role="region"
+  aria-label="Recordings" tabindex="0"&gt;
+  &lt;table class="ph-table"&gt;
+    &lt;caption&gt;Sample recording files&lt;/caption&gt;
+    &lt;!-- Native table headings and rows --&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre></section>
+    <section aria-labelledby="tabs-heading"><h2 id="tabs-heading" class="ph-title">Tabs and disclosure</h2><div class="ph-tabs" role="tablist" aria-label="Recording information"><button role="tab" id="tab-details" aria-controls="panel-details" aria-selected="true">Details</button><button role="tab" id="tab-source" aria-controls="panel-source" aria-selected="false" tabindex="-1">Markup</button></div><div id="panel-details" role="tabpanel" aria-labelledby="tab-details" tabindex="0"><p>Use Left/Right, Home, and End to switch tabs. This example supplies keyboard handling in <code>examples/components.js</code>.</p></div><div id="panel-source" role="tabpanel" aria-labelledby="tab-source" tabindex="0" hidden><pre class="ph-code"><code>&lt;div class="ph-tabs" role="tablist" aria-label="Information"&gt;
+  &lt;!-- Buttons need tab roles, panel IDs, and keyboard behavior. --&gt;
+&lt;/div&gt;</code></pre></div><details><summary>What does the stylesheet implement?</summary><p>The appearance of tabs, buttons, fields, and dialogs. Native HTML supplies controls and disclosure behavior. Application code supplies tab selection, submission, and dialog opening.</p></details></section>
+    <section aria-labelledby="dialog-heading"><h2 id="dialog-heading" class="ph-title">Native dialogs</h2><p>The action above calls <code>showModal()</code>. Keep the dialog inside the Phosphor scope so it inherits the palette and font.</p><pre class="ph-code"><code>&lt;dialog class="ph-dialog" aria-labelledby="dialog-title"&gt;
+  &lt;h2 id="dialog-title"&gt;Recording details&lt;/h2&gt;
+  &lt;form method="dialog"&gt;
+    &lt;button class="ph-button" autofocus&gt;Close&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/dialog&gt;</code></pre></section>
+    <dialog id="reference-dialog" class="ph-dialog" aria-labelledby="dialog-title"><h2 id="dialog-title" class="ph-title">Recording details</h2><p>The browser handles modal focus and Escape. No recording data is connected.</p><form method="dialog"><button class="ph-button" autofocus>Close dialog</button></form></dialog>
+  </main>
+  <footer class="reference-footer"><a href="https://unfinished-works.com/">Unfinished Works</a> · <a href="https://github.com/ghreprimand/unfinished-phosphor/blob/main/docs/style-reference.md">Style and token reference</a> · <a href="/LICENSE">GPL-3.0-only</a> · <a href="/THIRD_PARTY_NOTICES.md">Third-party credits</a> · <a href="/source.tgz">Download source</a></footer>
+  <script type="module" src="./components.js"></script>
+</body>
+</html>

@@ -10,11 +10,14 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const files = [
   'LICENSE', 'THIRD_PARTY_NOTICES.md', 'README.md', '.node-version',
   'package.json', 'package-lock.json', 'vite.config.js', 'playwright.config.js',
-  'index.html', 'examples/plain.html',
+  'index.html', 'examples/plain.html', 'examples/components.html', 'examples/components.js', 'examples/components.css',
   'src/index.js', 'src/ambient.js', 'src/palettes.js', 'src/palette-snapshot.json',
-  'src/core.css', 'src/components.css',
+  'src/core.css', 'src/components.css', 'src/fonts.css',
+  'fonts/victor-mono/LICENSE', 'fonts/victor-mono/provenance.json',
+  'fonts/victor-mono/VictorMono-Regular.woff2', 'fonts/victor-mono/VictorMono-Italic.woff2',
+  'fonts/victor-mono/VictorMono-Bold.woff2', 'fonts/victor-mono/VictorMono-BoldItalic.woff2',
   'playground/main.js', 'playground/specimens.js', 'playground/playground.css',
-  'docs/integration.md', 'docs/provenance.md', 'docs/deployment.md',
+  'docs/integration.md', 'docs/provenance.md', 'docs/deployment.md', 'docs/getting-started.md', 'docs/style-reference.md',
   'scripts/package-demo.mjs', 'scripts/snapshot-palettes.mjs',
   'tests/palettes.test.js', 'tests/browser/playground.spec.js',
 ];

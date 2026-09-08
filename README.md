@@ -6,13 +6,13 @@ Illuminated text, dark glass, stationary raster, and optional ambient light for 
 
 > **Status: experimental demonstration.** The toolkit code is licensed under GPL-3.0-only. The first public edition includes seven palettes with documented origins. No npm package is published.
 
-[Open the demo](https://unfinished-phosphor.pages.dev/) · [Integration guide](docs/integration.md) · [Theme credits](THIRD_PARTY_NOTICES.md)
+[Open the demo](https://phosphor.unfinished-works.com/) · [Getting started](docs/getting-started.md) · [Component reference](https://phosphor.unfinished-works.com/examples/components.html) · [Integration guide](docs/integration.md) · [Third-party credits](THIRD_PARTY_NOTICES.md)
 
 ## License
 
 Copyright (C) 2026 Unfinished Works. The toolkit code and examples are licensed under the [GNU General Public License, version 3 only](LICENSE), without warranty. You may redistribute and modify them under those terms. No proprietary-use exception or separate permissive license for examples is granted.
 
-Imported themes retain their applicable upstream licenses and notices. See [third-party notices](THIRD_PARTY_NOTICES.md) for pinned sources and full license texts. The GPL designation does not claim ownership of third-party theme names or material. Unreviewed palettes from local development are excluded from the public edition.
+Imported themes retain their applicable upstream licenses and notices. The bundled Victor Mono fonts retain their SIL OFL 1.1 license. See [third-party notices](THIRD_PARTY_NOTICES.md) for pinned sources and full license texts. The GPL designation does not claim ownership of third-party theme names or material. Unreviewed palettes from local development are excluded from the public edition.
 
 ## Run locally
 
@@ -33,7 +33,7 @@ The playground includes website, dashboard, and workbench specimens with invente
 
 ## Decorate existing HTML
 
-Load the scoped core. The component stylesheet is optional.
+For file-copy instructions and a complete HTML page, start with [Getting started](docs/getting-started.md). Load the scoped core. The component and font stylesheets are optional.
 
 ```html
 <link rel="stylesheet" href="./src/core.css">
@@ -91,6 +91,7 @@ The `data-ph-palette` attribute is descriptive metadata; selecting a catalog pal
 | Density | Compact or comfortable spacing, independent of type size |
 | Palettes | Four Phosphor palettes plus adapted Nord, Dracula, and Catppuccin Mocha palettes, with pinned upstream sources |
 | Ambient | Optional WebGL, event-driven pointer response, static CSS fallback |
+| Typography | Self-hosted Victor Mono on the website; optional font stylesheet for consumers |
 | Primitives | Native panels, controls, tables, tabs, notices, code and dialogs |
 | Playground | Three interactive synthetic specimens, comparison and configuration export |
 
@@ -109,7 +110,7 @@ npm run build
 
 Palette tests cover the complete catalog, role mapping, contrast, and stable IDs. Chromium checks cover native interactions, keyboard tabs/dialogs, scope isolation, renderer lifecycle and fallback, motion preferences, high DPI, narrow containers, and zoom. This first demonstration does not establish support across all browsers or frameworks.
 
-See the [integration and adaptation guide](docs/integration.md) and [provenance inventory](docs/provenance.md). System fonts are used; no font files, reference screenshots, or third-party visual assets are bundled.
+See the [integration and adaptation guide](docs/integration.md) and [provenance inventory](docs/provenance.md). The website uses self-hosted Victor Mono. The toolkit defaults to system fonts; import `src/fonts.css` after the core and add `data-ph-font="victor-mono"` to opt in. Font sources, hashes, and OFL terms are included. See the [style reference](docs/style-reference.md) for visual layers, reusable classes, and example-only behavior.
 
 ## Demo hosting
 

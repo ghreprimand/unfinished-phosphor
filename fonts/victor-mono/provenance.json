@@ -1,0 +1,40 @@
+{
+  "project": "Victor Mono",
+  "author": "Rune Bjørnerås",
+  "license": "OFL-1.1",
+  "upstream": "https://github.com/rubjo/victor-mono",
+  "revision": "a5d059ff7a098a4c63ca74ab4c9ff8b9876534bf",
+  "modified": false,
+  "files": [
+    {
+      "file": "VictorMono-Regular.woff2",
+      "source": "https://raw.githubusercontent.com/rubjo/victor-mono/a5d059ff7a098a4c63ca74ab4c9ff8b9876534bf/dist/woff2/VictorMono-Regular.woff2",
+      "sha256": "5e15272c9aa63b4c8557766d705a712415edaa23e5e26b15c61433ab48096d84",
+      "bytes": 70852
+    },
+    {
+      "file": "VictorMono-Italic.woff2",
+      "source": "https://raw.githubusercontent.com/rubjo/victor-mono/a5d059ff7a098a4c63ca74ab4c9ff8b9876534bf/dist/woff2/VictorMono-Italic.woff2",
+      "sha256": "d4f77a24b83d37a886528b3b84ee8e4fe165742ba780ecb08c0fc9fb94512562",
+      "bytes": 86276
+    },
+    {
+      "file": "VictorMono-Bold.woff2",
+      "source": "https://raw.githubusercontent.com/rubjo/victor-mono/a5d059ff7a098a4c63ca74ab4c9ff8b9876534bf/dist/woff2/VictorMono-Bold.woff2",
+      "sha256": "2aea0f0a47691e110c1c8e3ff046607a0329897e73d1a63ea9c669c91c444ce7",
+      "bytes": 71928
+    },
+    {
+      "file": "VictorMono-BoldItalic.woff2",
+      "source": "https://raw.githubusercontent.com/rubjo/victor-mono/a5d059ff7a098a4c63ca74ab4c9ff8b9876534bf/dist/woff2/VictorMono-BoldItalic.woff2",
+      "sha256": "58e49b60723fa8c82ef7f49898846f6157fbd70c8da4c44970395d2fdaf8e91a",
+      "bytes": 89444
+    },
+    {
+      "file": "LICENSE",
+      "source": "https://raw.githubusercontent.com/rubjo/victor-mono/a5d059ff7a098a4c63ca74ab4c9ff8b9876534bf/LICENSE",
+      "sha256": "09a2b8de67102a99a94a583510967e67b0e3848784ff8e818ab3a7a95c329767",
+      "bytes": 4365
+    }
+  ]
+}

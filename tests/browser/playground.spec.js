@@ -4,6 +4,50 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const moduleStats = page => page.evaluate(async()=>(await import('/playground/main.js')).ambient.stats);
+test('website loads local Victor Mono while the unstyled integration host keeps its font', async ({ page }) => {
+  const failedFonts = [];
+  page.on('response', response => {
+    if (response.url().includes('.woff2') && !response.ok()) failedFonts.push(response.url());
+  });
+  await page.goto('/');
+  await page.evaluate(() => document.fonts.ready);
+  for (const selector of [':root', '.site-header', '.intro h1', '#specimen', '.ph-input']) {
+    expect(await page.locator(selector).first().evaluate(el => getComputedStyle(el).fontFamily)).toContain('Victor Mono');
+  }
+  expect(await page.evaluate(() => [...document.fonts].some(font => font.family === 'Victor Mono' && font.status === 'loaded'))).toBe(true);
+  await page.goto('/examples/plain.html');
+  expect(await page.locator('#outside-text').evaluate(el => getComputedStyle(el).fontFamily)).not.toContain('Victor Mono');
+  expect(failedFonts).toEqual([]);
+});
+test('component reference loads all font faces and supports native controls, keyboard tabs, and narrow screens', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/examples/components.html');
+  await page.evaluate(() => document.fonts.ready);
+  expect(await page.evaluate(() => [...document.fonts].filter(font => font.family === 'Victor Mono' && font.status === 'loaded').length)).toBe(4);
+  await page.selectOption('#palette', 'website:amber');
+  await expect(page.locator('#reference')).toHaveAttribute('data-ph-palette', 'website:amber');
+  await page.getByRole('button', { name: 'Open dialog', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Close dialog' })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#open-dialog')).toBeFocused();
+  await page.getByRole('button', { name: 'Try form' }).click();
+  await expect(page.locator('#form-status')).toContainText('Nothing was uploaded or saved');
+  await page.locator('#tab-details').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('#tab-source')).toBeFocused();
+  await expect(page.locator('#panel-source')).toBeVisible();
+  await expect(page.locator('#panel-details')).toBeHidden();
+  await page.keyboard.press('Home');
+  await expect(page.locator('#tab-details')).toBeFocused();
+  const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+  expect(accessibility.violations).toEqual([]);
+  for (const width of [720, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+  expect(errors).toEqual([]);
+});
 test('all independent controls preserve content and palette changes preserve geometry', async({page})=>{
   const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');
   await expect(page.locator('#queue-rows tr')).toHaveCount(5);
