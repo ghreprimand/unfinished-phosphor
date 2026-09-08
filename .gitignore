@@ -1,0 +1,38 @@
+# Dependencies and generated output
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.local
+*.local.*
+*.pem
+*.key
+
+# Private working notes and agent state
+.archon/
+.claude/
+.codex/
+.private/
+private/
+.local/
+local-notes/
+*-private-handoff.md
+*-agent-prompt.md
+
+# Local browser captures and test output
+playwright-report/
+test-results/
+.auth/
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+*.log
